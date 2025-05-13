@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudeep Angamgari - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        /* Custom font */
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            overflow-x: hidden; 
+            overflow-y: auto; 
+            /* cursor: none; */ 
+        }
+
+        /* --- Graphical Mouse Pointers --- */
+        .graphical-cursor-common { 
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none; 
+            z-index: 9999; 
+            transform: translate(-50%, -50%); 
+            opacity: 0; 
+            will-change: left, top, width, height, background-color, border-color; 
+            transition: opacity 0.3s ease; 
+        }
+        body:hover .graphical-cursor-common { 
+            opacity: 1; 
+        }
+        #graphical-cursor { 
+            width: 28px; 
+            height: 28px;
+            background-color: rgba(0, 123, 255, 0.3); 
+            border: 2px solid rgba(0, 123, 255, 0.7);
+            transition: background-color 0.2s ease, border-color 0.2s ease, width 0.2s ease, height 0.2s ease, left 0.03s linear, top 0.03s linear; 
+        }
+        .dark #graphical-cursor {
+            background-color: rgba(165, 243, 252, 0.3); 
+            border: 2px solid rgba(165, 243, 252, 0.7);
+        }
+        #graphical-cursor.hover-active {
+            width: 36px;
+            height: 36px;
+            background-color: rgba(0, 123, 255, 0.5);
+        }
+        .dark #graphical-cursor.hover-active {
+            background-color: rgba(165, 243, 252, 0.5);
+        }
+        #cursor-follower { 
+            width: 40px; 
+            height: 40px;
+            border: 2px solid rgba(0, 123, 255, 0.5);
+            background-color: transparent; 
+            transition: background-color 0.2s ease, border-color 0.2s ease, width 0.2s ease, height 0.2s ease, left 0.15s ease-out, top 0.15s ease-out; 
+            z-index: 9998; 
+        }
+        .dark #cursor-follower {
+            border: 2px solid rgba(165, 243, 252, 0.5);
+        }
+        #cursor-follower.hover-active {
+            width: 20px; 
+            height: 20px;
+            background-color: rgba(0, 123, 255, 0.4);
+            border-width: 0px;
+        }
+        .dark #cursor-follower.hover-active {
+            background-color: rgba(165, 243, 252, 0.4);
+        }
+
+        /* --- 3D Scene Canvas --- */
+        #backgroundCanvas { 
+            position: fixed;
+            top: 0; 
+            left: 0;
+            width: 100%;
+            height: 100vh; 
+            z-index: -1;  
+            pointer-events: none; 
+        }
+        
+        /* --- Atmospheric Glows --- */
+        .atmospheric-glow {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            pointer-events: none;
+            z-index: -1; 
+            transform: translate(-50%, -50%); 
+        }
+        #sun-glow {
+            width: 300px; 
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 223, 186, 0.3) 0%, rgba(255, 223, 186, 0) 70%);
+        }
+        #moon-glow {
+            width: 250px; 
+            height: 250px;
+            background: radial-gradient(circle, rgba(200, 200, 255, 0.15) 0%, rgba(200, 200, 255, 0) 70%);
+        }
+        .light #sun-glow.active-glow { opacity: 1; }
+        .dark #moon-glow.active-glow { opacity: 1; }
+
+
+        /* --- Mood Light (Dark Mode) --- */
+        .mood-light {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px; 
+            height: 150px; 
+            background-color: rgba(255, 223, 186, 0.08); 
+            border-radius: 50% 50% 0 0; 
+            filter: blur(60px); 
+            opacity: 0;
+            transition: opacity 0.7s ease-in-out;
+            z-index: -2; 
+        }
+        .dark .mood-light { opacity: 1; }
+
+        /* --- Stars (Dark Mode) --- */
+        #stars-container {
+            position: fixed;
+            inset: 0;
+            z-index: -1; 
+            overflow: hidden;
+            display: none; 
+        }
+        .dark #stars-container.active {
+            display: block;
+        }
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0; 
+            animation-name: twinkle;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+        }
+        .star-xs { width: 0.5px; height: 0.5px; }
+        .star-sm { width: 1px; height: 1px; }
+        .star-md { width: 1.5px; height: 1.5px; }
+        .star-lg { width: 2px; height: 2px; }
+        .star-xl { width: 2.5px; height: 2.5px; }
+
+        @keyframes twinkle {
+            0% { opacity: var(--star-opacity-min, 0.1); transform: scale(0.8); } 
+            50% { opacity: var(--star-opacity-max, 0.9); transform: scale(1.1); }
+            100% { opacity: var(--star-opacity-min, 0.1); transform: scale(0.8); }
+        }
+        @keyframes slowDrift { 
+            from { transform: translateX(0px) translateY(0px); }
+            to { transform: translateX(-50px) translateY(-30px); }
+        }
+        .dark #stars-container.drifting {
+             animation: slowDrift 180s linear infinite alternate;
+        }
+        .star.star-exit-active {
+            animation: starExitAnim 0.6s ease-out forwards;
+        }
+        @keyframes starExitAnim {
+            to {
+                opacity: 0;
+                transform: scale(0.2) translateY(-50px); 
+            }
+        }
+        
+        /* --- Shooting Stars --- */
+        #shooting-stars-container {
+            position: fixed;
+            inset: 0;
+            z-index: -1; 
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .shooting-star {
+            position: absolute;
+            width: 2px; 
+            height: 80px; 
+            background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%);
+            border-radius: 1px / 50px; 
+            opacity: 0;
+            animation-name: shoot;
+            animation-timing-function: ease-out;
+            animation-iteration-count: 1;
+            transform-origin: top center;
+        }
+        @keyframes shoot {
+            0% { opacity: 0; transform: translateY(var(--start-y)) translateX(var(--start-x)) rotate(var(--angle)) scaleY(0.3); }
+            20% { opacity: 1; scaleY(1); }
+            80% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(calc(var(--start-y) + 100vh)) translateX(calc(var(--start-x) + var(--end-x-offset))) rotate(var(--angle)) scaleY(1.5); }
+        }
+
+        /* --- 3D Mountains --- */
+        /* Styles for 3D mountains are handled in JS materials */
+
+        /* --- Clouds --- */
+        #clouds-container {
+            position: fixed;
+            inset: 0;
+            z-index: -1; 
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .light #clouds-container.active {
+            display: block;
+        }
+        .cloud-parent { 
+            position: absolute;
+            opacity: 0; 
+            animation-name: driftCloud;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+        .cloud-puff { 
+            position: absolute;
+            border-radius: 50%; 
+        }
+        .light .cloud-puff {
+            background-color: rgba(255, 255, 255, 0.85); 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .dark .cloud-puff {
+            background-color: rgba(176, 190, 197, 0.6); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        @keyframes driftCloud {
+            0% {
+                transform: translateX(-250px) translateY(var(--cloud-y)); 
+                opacity: 0;
+            }
+            10%, 90% { 
+                opacity: var(--cloud-opacity);
+            }
+            100% {
+                transform: translateX(calc(100vw + 250px)) translateY(var(--cloud-y)); 
+                opacity: 0;
+            }
+        }
+        .cloud-parent.cloud-exit-active {
+            animation-name: cloudExitAnim; 
+            animation-duration: 0.7s;
+            animation-timing-function: ease-in;
+            animation-fill-mode: forwards;
+            animation-iteration-count: 1; 
+        }
+        @keyframes cloudExitAnim {
+            to {
+                opacity: 0;
+                transform: translateY(-100px) scale(0.6) translateX(var(--cloud-current-x, 0)); 
+            }
+        }
+
+        /* --- Theme Toggle Button Container --- */
+        #theme-toggle-button-container {
+            position: fixed;
+            top: 1.5rem; 
+            right: 1.5rem; 
+            z-index: 50; 
+        }
+        .theme-toggle {
+            padding: 0.75rem; 
+            border-radius: 9999px; 
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            display: flex; align-items: center; justify-content: center; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer; 
+        }
+        .theme-toggle:hover { box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); }
+        .theme-toggle svg { width: 24px; height: 24px; }
+
+        /* --- Theme Specific Styles --- */
+        .dark { background-color: #0f172a; color: #e2e8f0; } 
+        .dark .theme-toggle { background-color: #334155; color: #e2e8f0; } 
+        .dark .theme-toggle:hover { background-color: #1e293b; }
+        .dark #graphical-cursor {
+            background-color: rgba(165, 243, 252, 0.3); 
+            border: 2px solid rgba(165, 243, 252, 0.7);
+        }
+         .dark #cursor-follower {
+            border: 2px solid rgba(165, 243, 252, 0.5);
+        }
+        .dark #graphical-cursor.hover-active {
+            background-color: rgba(165, 243, 252, 0.5);
+        }
+        .dark #cursor-follower.hover-active {
+            background-color: rgba(165, 243, 252, 0.4);
+        }
+
+
+        .light { background-color: #cce7ff; color: #1a202c; } 
+        .light .theme-toggle { background-color: #fde047; color: #1a202c; }
+        .light .theme-toggle:hover { background-color: #facc15; }
+        .light #graphical-cursor {
+            background-color: rgba(59, 130, 246, 0.3); 
+            border: 2px solid rgba(59, 130, 246, 0.7);
+        }
+        .light #cursor-follower {
+            border: 2px solid rgba(59, 130, 246, 0.5);
+        }
+        .light #graphical-cursor.hover-active {
+            background-color: rgba(59, 130, 246, 0.5);
+        }
+        .light #cursor-follower.hover-active {
+            background-color: rgba(59, 130, 246, 0.4);
+        }
+
+
+        /* Portfolio Section Styling */
+        .portfolio-section {
+            background-color: rgba(255, 255, 255, 0.7); 
+            backdrop-filter: blur(10px);
+            border-radius: 0.75rem; 
+            padding: 1.5rem; 
+            margin-bottom: 2rem; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .portfolio-section.is-visible { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dark .portfolio-section {
+            background-color: rgba(30, 41, 59, 0.7); 
+        }
+        .portfolio-section h2 {
+            font-size: 1.875rem; 
+            font-weight: 700;
+            margin-bottom: 1rem; 
+            border-bottom: 2px solid; 
+            padding-bottom: 0.5rem; 
+        }
+        .light .portfolio-section h2 { border-color: #e5e7eb; } 
+        .dark .portfolio-section h2 { border-color: #4b5563; } 
+
+        .portfolio-section h3 {
+            font-size: 1.25rem; 
+            font-weight: 600;
+            margin-top: 1rem;
+            margin-bottom: 0.25rem;
+        }
+         .portfolio-section h4 {
+            font-size: 1rem; 
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: #6b7280; 
+        }
+        .dark .portfolio-section h4 { color: #9ca3af; } 
+
+        .portfolio-section ul {
+            list-style-type: none; 
+            padding-left: 0; 
+            margin-bottom: 1rem;
+        }
+        .portfolio-section li { 
+            margin-bottom: 0.75rem; 
+            display: flex; 
+            align-items: flex-start; 
+        }
+        .portfolio-section li svg { 
+            width: 1.25em; 
+            height: 1.25em;
+            margin-right: 0.75rem; 
+            flex-shrink: 0; 
+            margin-top: 0.125rem; 
+        }
+        .light .portfolio-section li svg { fill: #3b82f6; } 
+        .dark .portfolio-section li svg { fill: #60a5fa; } 
+
+
+        .portfolio-section .tech-tag {
+            display: inline-block;
+            background-color: #e0e7ff; 
+            color: #3730a3; 
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem; 
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer; 
+        }
+        .dark .portfolio-section .tech-tag {
+            background-color: #374151; 
+            color: #d1d5db; 
+        }
+        .contact-link {
+            display: inline-block;
+            margin-right: 1rem;
+            transition: color 0.2s ease;
+            cursor: pointer; 
+        }
+        .contact-link:hover {
+             color: #3b82f6; 
+        }
+        .dark .contact-link:hover {
+            color: #60a5fa; 
+        }
+
+    </style>
+</head>
+<body class="light transition-colors duration-500">
+
+    <div id="graphical-cursor" class="graphical-cursor-common"></div>
+    <div id="cursor-follower" class="graphical-cursor-common"></div>
+
+    <canvas id="backgroundCanvas"></canvas> 
+    <div id="sun-glow" class="atmospheric-glow"></div>
+    <div id="moon-glow" class="atmospheric-glow"></div>
+    <div id="shooting-stars-container"></div>
+
+
+    <div id="stars-container"></div>
+    <div id="clouds-container"></div>
+    <div id="mood-light" class="mood-light"></div>
+
+    <div id="theme-toggle-button-container">
+        <button id="theme-toggle-button" class="theme-toggle">
+            <svg id="toggle-moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" /></svg>
+            <svg id="toggle-sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-6.364-.386 1.591-1.591M3 12h2.25m.386-6.364 1.591 1.591M12 3v2.25" /></svg>
+        </button>
+    </div>
+
+    <div class="min-h-screen flex flex-col items-center justify-start pt-24 p-6 relative z-10"> 
+        <div class="text-center mb-12">
+            <h1 id="page-title" class="text-4xl md:text-5xl font-bold mb-2">Sudeep Angamgari</h1>
+            <div id="contact-info" class="text-md md:text-lg mb-4">
+                <a href="tel:+18402344965" class="contact-link interactive-element">+1 (840) 234 4965</a> |
+                <a href="mailto:sudeepangamgari@gmail.com" class="contact-link interactive-element">sudeepangamgari@gmail.com</a> |
+                <a href="https://linkedin.com/in/sudeepangamgari" target="_blank" rel="noopener noreferrer" class="contact-link interactive-element">LinkedIn</a> |
+                <a href="https://github.com/sudeepreddyyy" target="_blank" rel="noopener noreferrer" class="contact-link interactive-element">GitHub</a>
+            </div>
+            <p id="page-subtitle" class="text-lg md:text-xl">Data Engineer | Crafting intelligent data solutions.</p>
+        </div>
+        
+        <div class="w-full max-w-4xl"> 
+            <section id="experience" class="portfolio-section scroll-animate">
+                <h2>Professional Experience</h2>
+                <div>
+                    <h3>Data Analytical Engineer</h3>
+                    <h4>Purdue University | Jan 2024 - Dec 2024</h4>
+                    <ul>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Architected AWS-based scalable data pipelines using Python, S3, and Lambda, accelerating ingestion of 100K+ daily sales records; improved processing speed by 30%.</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Developed real-time inventory tracking solutions using AWS S3, Lambda, and SNS, decreasing stock-out incidents by 25%.</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Deployed event-driven anomaly detection systems leveraging AWS Lambda, SQS, and SNS, reducing incident response time by 60%.</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Created interactive Power BI dashboards, enhancing sales and inventory decision-making efficiency by 40%.</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Enforced data security through IAM policies and access controls.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Data Engineer</h3>
+                    <h4>JLP Partnership | Mar 2021 - Dec 2022</h4>
+                    <ul>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Designed and implemented real-time data pipelines using AWS Kinesis, Lambda, Redshift, and S3, processing 2M+ daily sales transactions with 99% uptime and reducing data ingestion lag by 40%.</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Streamlined PySpark batch jobs and refactored PostgreSQL queries, reducing compute time by 35% and improving execution speed.</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Automated real-time sales data analysis using AWS Lambda and Pandas, boosting data processing efficiency by 40%.</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Built a Flask-based CRUD API, improving data retrieval speed by 30% and enabling seamless frontend integration.</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Pioneered interactive Power BI dashboards offering real-time visibility into sales cycles and campaign effectiveness; cut weekly reporting time by 6 hours.</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Maintained agile workflows, test-driven development, and CI/CD practices for continuous integration and deployment.</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Collaborated with ML teams to construct robust data pipelines supporting model training and operational forecasting.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Junior Data Engineer</h3>
+                    <h4>BIS Pvt Ltd | Jun 2020 - Feb 2021</h4>
+                    <ul>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Constructed end-to-end ETL pipelines with Python and SQL to process ad performance data, increasing pipeline throughput by 30%.</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Designed Power BI dashboards to track ad spend, CTR, and engagement, reducing manual reporting time by 40%.</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Enhanced Snowflake-based data warehouses, resulting in a 30% gain in query responsiveness.</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Contributed to the migration of 5 TB of on-premise data to AWS S3/Redshift, lowering query latency by 25% and reducing cloud costs by 15%.</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Supported data cleansing and schema restructuring efforts, boosting query efficiency by 15%.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="projects" class="portfolio-section scroll-animate">
+                <h2>Projects</h2>
+                <div>
+                    <h3>Real-Time Stock Market Data Pipeline using Kafka and AWS</h3>
+                    <p><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="inline-block w-5 h-5 mr-2"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Constructed a real-time stock data pipeline processing 500K+ daily transactions, reducing data latency by 30% and query execution time by 25% through efficient ETL workflows.</p>
+                    <p class="mt-2"><strong>Tech:</strong> <span class="tech-tag interactive-element">Apache Kafka</span> <span class="tech-tag interactive-element">AWS Glue</span> <span class="tech-tag interactive-element">AWS Redshift</span> <span class="tech-tag interactive-element">AWS S3</span> <span class="tech-tag interactive-element">Python</span></p>
+                </div>
+                <div class="mt-6">
+                    <h3>Voice-Controlled UAV System (AirSim, ChatGPT, YOLOv8)</h3>
+                    <p><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="inline-block w-5 h-5 mr-2"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Engineered a voice-controlled AI UAV using GPT-4 for natural language input and YOLOv8 for crop detection. Achieved a 50% command latency reduction and validated performance in simulated agriculture missions.</p>
+                    <p class="mt-2"><strong>Tech:</strong> <span class="tech-tag interactive-element">Python</span> <span class="tech-tag interactive-element">LLM (ChatGPT)</span> <span class="tech-tag interactive-element">YOLOv8</span> <span class="tech-tag interactive-element">AirSim</span></p>
+                </div>
+                <div class="mt-6">
+                    <h3>Conversational Recommendation System</h3>
+                    <p><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="inline-block w-5 h-5 mr-2"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Designed a personalized recommendation engine using an LLM-powered chatbot and Neo4j to model user preferences and relationship patterns for context-aware suggestions.</p>
+                    <p class="mt-2"><strong>Tech:</strong> <span class="tech-tag interactive-element">React</span> <span class="tech-tag interactive-element">Python</span> <span class="tech-tag interactive-element">OpenAI API</span> <span class="tech-tag interactive-element">Neo4j</span></p>
+                </div>
+                <div class="mt-6">
+                    <h3>ETL Pipeline Optimization for Big Data</h3>
+                    <p><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="inline-block w-5 h-5 mr-2"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Built ETL pipeline for healthcare datasets using Apache Airflow and AWS Glue; improved data processing speed by 30%.</p>
+                    <p class="mt-2"><strong>Tech:</strong> <span class="tech-tag interactive-element">Apache Airflow</span> <span class="tech-tag interactive-element">AWS Glue</span> <span class="tech-tag interactive-element">Python</span> <span class="tech-tag interactive-element">SQL</span></p>
+                </div>
+            </section>
+
+            <section id="skills" class="portfolio-section scroll-animate">
+                <h2>Technical Skills</h2>
+                <div>
+                    <h3>Cloud:</h3>
+                    <p><span class="tech-tag interactive-element">AWS (S3</span> <span class="tech-tag interactive-element">Redshift</span> <span class="tech-tag interactive-element">Glue</span> <span class="tech-tag interactive-element">Kinesis</span> <span class="tech-tag interactive-element">Lambda</span> <span class="tech-tag interactive-element">SNS</span> <span class="tech-tag interactive-element">SQS</span> <span class="tech-tag interactive-element">CloudWatch</span> <span class="tech-tag interactive-element">IAM)</span></p>
+                    <h3>Big Data:</h3>
+                    <p><span class="tech-tag interactive-element">Apache Kafka</span> <span class="tech-tag interactive-element">Spark (PySpark)</span></p>
+                    <h3>ETL:</h3>
+                    <p><span class="tech-tag interactive-element">Python (Pandas, Flask)</span> <span class="tech-tag interactive-element">SQL (PostgreSQL, MySQL)</span> <span class="tech-tag interactive-element">Apache Airflow</span></p>
+                    <h3>Visualization:</h3>
+                    <p><span class="tech-tag interactive-element">Power BI</span> <span class="tech-tag interactive-element">Tableau</span> <span class="tech-tag interactive-element">Pivot tables and VLOOKUP</span></p>
+                    <h3>DevOps:</h3>
+                    <p><span class="tech-tag interactive-element">Git</span> <span class="tech-tag interactive-element">GitHub</span></p>
+                    <h3>Tools:</h3>
+                    <p><span class="tech-tag interactive-element">Jupyter</span> <span class="tech-tag interactive-element">VSCode</span> <span class="tech-tag interactive-element">JIRA</span></p>
+                    <h3>ML/AI:</h3>
+                    <p><span class="tech-tag interactive-element">XGBoost</span> <span class="tech-tag interactive-element">LDA</span> <span class="tech-tag interactive-element">NLP</span> <span class="tech-tag interactive-element">YOLOv8</span> <span class="tech-tag interactive-element">LLM</span></p>
+                </div>
+            </section>
+
+            <section id="education" class="portfolio-section scroll-animate">
+                <h2>Education</h2>
+                <div>
+                    <h3>Master of Science in Computer Information Technology</h3>
+                    <h4>Purdue University | Jan 2023 - Dec 2024</h4>
+                </div>
+            </section>
+        </div> </div>
+
+    <script>
+        // DOM Elements
+        const body = document.body;
+        const themeToggleButton = document.getElementById('theme-toggle-button');
+        const moodLight = document.getElementById('mood-light');
+        const toggleMoonIcon = document.getElementById('toggle-moon-icon'); 
+        const toggleSunIcon = document.getElementById('toggle-sun-icon');   
+        const pageTitle = document.getElementById('page-title');
+        const pageSubtitle = document.getElementById('page-subtitle');
+        const starsContainer = document.getElementById('stars-container');
+        const cloudsContainer = document.getElementById('clouds-container');
+        const celestialCanvas = document.getElementById('backgroundCanvas'); 
+        const graphicalCursor = document.getElementById('graphical-cursor'); 
+        const cursorFollower = document.getElementById('cursor-follower'); 
+        const sunGlow = document.getElementById('sun-glow');
+        const moonGlow = document.getElementById('moon-glow');
+        const shootingStarsContainer = document.getElementById('shooting-stars-container');
+
+
+        const CLOUD_EXIT_DURATION = 700; 
+        const STAR_EXIT_DURATION = 600; 
+
+        // --- Three.js Setup ---
+        let scene, camera, renderer, sun3D, moon3D, sunLight, moonSphere, moonOcclusionSphere;
+        let sunTargetY, moonTargetY;
+        const celestialEnterY = 7;   
+        const celestialRiseY = 2.5;  
+        const celestialExitY = -7;   
+        const animationSpeed = 0.04; 
+        const celestialXPosition = 0; 
+
+        function initThreeJS() {
+            scene = new THREE.Scene();
+            
+            camera = new THREE.PerspectiveCamera(75, celestialCanvas.clientWidth / celestialCanvas.clientHeight, 0.1, 1000);
+            camera.position.z = 5; 
+
+            renderer = new THREE.WebGLRenderer({ 
+                canvas: celestialCanvas, 
+                alpha: true, 
+                antialias: true 
+            });
+            renderer.setSize(celestialCanvas.clientWidth, celestialCanvas.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio); 
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); 
+            scene.add(ambientLight);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7); 
+            directionalLight.position.set(3, 5, 5); 
+            scene.add(directionalLight);
+
+            // 3D Sun
+            const sunSegments = 64; 
+            const sunGeometry = new THREE.SphereGeometry(1, sunSegments, sunSegments); 
+            const sunMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xffdd00, 
+                emissive: 0xffcc33, 
+                emissiveIntensity: 1.5, 
+                roughness: 0.7, 
+                metalness: 0.1
+            });
+            sun3D = new THREE.Mesh(sunGeometry, sunMaterial);
+            sun3D.position.x = celestialXPosition; 
+            sun3D.position.y = celestialExitY; // Start off-screen
+            sun3D.visible = false; 
+            
+            sunLight = new THREE.PointLight(0xffddaa, 1.5, 50); 
+            sun3D.add(sunLight); 
+            scene.add(sun3D);
+
+            // 3D Half Moon (Group of two spheres)
+            moon3D = new THREE.Group(); 
+            moon3D.position.x = celestialXPosition;
+            moon3D.position.y = celestialExitY; // Start off-screen
+            moon3D.visible = false; 
+            const moonRadius = 0.8;
+            const moonSegments = 64; 
+
+            // Lit part of the moon
+            const moonSphereGeometry = new THREE.SphereGeometry(moonRadius, moonSegments, moonSegments);
+            const moonSphereMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xe0e0e0, 
+                roughness: 0.9,   
+                metalness: 0.1,
+            });
+            moonSphere = new THREE.Mesh(moonSphereGeometry, moonSphereMaterial);
+            moon3D.add(moonSphere);
+
+            // Occlusion sphere (dark part to create half-moon)
+            const occlusionGeometry = new THREE.SphereGeometry(moonRadius, moonSegments, moonSegments);
+            const occlusionMaterial = new THREE.MeshBasicMaterial({ color: 0x0f172a }); 
+            moonOcclusionSphere = new THREE.Mesh(occlusionGeometry, occlusionMaterial);
+            moonOcclusionSphere.position.set(moonRadius * 0.99, 0, 0.01); 
+            moon3D.add(moonOcclusionSphere);
+            
+            scene.add(moon3D);
+
+            sunTargetY = celestialExitY; 
+            moonTargetY = celestialExitY; 
+
+            animateThreeJS();
+        }
+
+        function animateThreeJS() {
+            requestAnimationFrame(animateThreeJS);
+
+            if (sun3D) { 
+                sun3D.position.y += (sunTargetY - sun3D.position.y) * animationSpeed;
+                sun3D.rotation.y += 0.001; 
+                // Update sun glow position
+                if (sunGlow && sun3D.visible) {
+                    const sunScreenPos = toScreenPosition(sun3D, camera);
+                    sunGlow.style.left = `${sunScreenPos.x}px`;
+                    sunGlow.style.top = `${sunScreenPos.y}px`;
+                }
+            }
+            
+            if (moon3D) { 
+                moon3D.position.y += (moonTargetY - moon3D.position.y) * animationSpeed;
+                moon3D.rotation.y += 0.0015; 
+                // Update moon glow position
+                if (moonGlow && moon3D.visible) {
+                    const moonScreenPos = toScreenPosition(moon3D, camera);
+                    moonGlow.style.left = `${moonScreenPos.x}px`;
+                    moonGlow.style.top = `${moonScreenPos.y}px`;
+                }
+            }
+            
+            renderer.render(scene, camera);
+        }
+        
+        // Helper function to convert 3D position to 2D screen position
+        function toScreenPosition(obj, camera) {
+            const vector = new THREE.Vector3();
+            const canvas = renderer.domElement; 
+
+            obj.getWorldPosition(vector); 
+            vector.project(camera); 
+
+            const x = (vector.x * .5 + .5) * canvas.clientWidth;
+            const y = (vector.y * -.5 + .5) * canvas.clientHeight;
+            return { x, y };
+        }
+
+
+        window.addEventListener('resize', () => {
+            if (camera && renderer) {
+                const canvas = renderer.domElement;
+                canvas.style.width = '100%'; 
+                canvas.style.height = '75vh'; 
+                
+                const newWidth = canvas.clientWidth;
+                const newHeight = canvas.clientHeight;
+
+                camera.aspect = newWidth / newHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(newWidth, newHeight);
+            }
+        });
+
+
+        // --- Star Creation ---
+        function createStars(numberOfStars) {
+            starsContainer.innerHTML = ''; 
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const sizeClasses = ['star-xs', 'star-sm', 'star-md', 'star-lg', 'star-xl'];
+                const sizeClass = sizeClasses[Math.floor(Math.random() * sizeClasses.length)];
+                star.classList.add(sizeClass);
+                
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                
+                const minOpacity = Math.random() * 0.3 + 0.1; 
+                const maxOpacity = Math.random() * 0.4 + 0.6; 
+                star.style.setProperty('--star-opacity-min', minOpacity.toFixed(2));
+                star.style.setProperty('--star-opacity-max', maxOpacity.toFixed(2));
+
+                const duration = Math.random() * 4 + 2; 
+                const delay = Math.random() * 6;     
+                star.style.animationDuration = `${duration}s`;
+                star.style.animationDelay = `${delay}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // --- Shooting Star Creation ---
+        let shootingStarInterval;
+        function startShootingStars() {
+            if (shootingStarInterval) clearInterval(shootingStarInterval); 
+            shootingStarInterval = setInterval(() => {
+                if (body.classList.contains('dark')) { 
+                    createShootingStar();
+                }
+            }, Math.random() * 10000 + 5000); 
+        }
+
+        function stopShootingStars() {
+            clearInterval(shootingStarInterval);
+        }
+
+        function createShootingStar() {
+            const star = document.createElement('div');
+            star.classList.add('shooting-star');
+
+            const startX = Math.random() * window.innerWidth;
+            const startY = -100; 
+            const angle = Math.random() * 40 + 20; 
+            const endXOffset = (Math.random() * 400 + 200) * (Math.random() < 0.5 ? 1 : -1); 
+            const duration = Math.random() * 2 + 1.5; 
+
+            star.style.setProperty('--start-x', `${startX}px`);
+            star.style.setProperty('--start-y', `${startY}px`);
+            star.style.setProperty('--angle', `${angle}deg`);
+            star.style.setProperty('--end-x-offset', `${endXOffset}px`);
+            star.style.animationDuration = `${duration}s`;
+            
+            shootingStarsContainer.appendChild(star);
+
+            setTimeout(() => {
+                star.remove();
+            }, duration * 1000 + 100); 
+        }
+
+
+        // --- Cloud Creation ---
+        function createClouds(numberOfClouds) {
+            cloudsContainer.innerHTML = ''; 
+            for (let i = 0; i < numberOfClouds; i++) {
+                const cloudParent = document.createElement('div');
+                cloudParent.classList.add('cloud-parent');
+                const baseCloudSize = Math.random() * 100 + 80; 
+                const puffsConfig = [
+                    { w: 1, h: 0.7, t: 0.1, l: 0.25, br: '60% 40% 30% 70% / 50% 60% 40% 50%' },
+                    { w: 0.7, h: 0.6, t: 0, l: 0, br: '50% 70% 40% 60% / 60% 50% 70% 40%' },   
+                    { w: 0.8, h: 0.65, t: 0.05, l: 0.6, br: '40% 60% 50% 50% / 50% 40% 60% 50%' }, 
+                    { w: 0.6, h: 0.5, t: -0.15, l: 0.35, br: '70% 30% 60% 40% / 50% 70% 30% 50%'}
+                ];
+                let totalWidth = 0;
+                let totalHeight = 0;
+                puffsConfig.forEach(config => {
+                    const puff = document.createElement('div');
+                    puff.classList.add('cloud-puff');
+                    const puffWidth = baseCloudSize * config.w;
+                    const puffHeight = baseCloudSize * config.h;
+                    puff.style.width = `${puffWidth}px`;
+                    puff.style.height = `${puffHeight}px`;
+                    puff.style.top = `${baseCloudSize * config.t}px`;
+                    puff.style.left = `${baseCloudSize * config.l}px`;
+                    if (config.br) puff.style.borderRadius = config.br;
+                    cloudParent.appendChild(puff);
+                    totalWidth = Math.max(totalWidth, (baseCloudSize * config.l) + puffWidth);
+                    totalHeight = Math.max(totalHeight, (baseCloudSize * config.t) + puffHeight);
+                });
+                cloudParent.style.width = `${totalWidth}px`;
+                cloudParent.style.height = `${totalHeight}px`;
+                cloudParent.style.setProperty('--cloud-y', `${Math.random() * 50}%`); 
+                cloudParent.style.top = `var(--cloud-y)`;
+                const duration = Math.random() * 90 + 50; 
+                cloudParent.style.animationDuration = `${duration}s`;
+                cloudParent.style.animationDelay = `-${Math.random() * duration}s`; 
+                cloudParent.style.setProperty('--cloud-opacity', (Math.random() * 0.3 + 0.65).toFixed(2)); 
+                cloudsContainer.appendChild(cloudParent);
+            }
+        }
+
+        // --- Theme Management ---
+        function setTheme(theme, isInitialLoad = false) {
+            body.classList.remove('light', 'dark');
+            body.classList.add(theme);
+            if (!isInitialLoad) { 
+                localStorage.setItem('theme', theme);
+            }
+
+            if (!sun3D || !moon3D) return; 
+
+            if (theme === 'dark') {
+                // Sun sets
+                sunTargetY = celestialExitY;
+                sun3D.visible = true; // Keep visible to animate out
+                sunGlow.classList.remove('active-glow');
+
+                // Moon rises
+                moon3D.position.y = celestialEnterY; // Start from top
+                moon3D.visible = true;               // Make visible
+                moonTargetY = celestialRiseY;        // Animate to rise position
+                moonGlow.classList.add('active-glow');
+                
+                sunLight.intensity = 0.2; 
+                moodLight.style.opacity = '1';
+                toggleMoonIcon.classList.add('hidden');
+                toggleSunIcon.classList.remove('hidden');
+                
+                if(isInitialLoad) {
+                    pageTitle.textContent = "Sudeep Angamgari";
+                    pageSubtitle.textContent = "Data Engineer | Crafting intelligent data solutions.";
+                } else {
+                    pageTitle.textContent = "Sudeep Angamgari"; 
+                    pageSubtitle.textContent = "The stars are out tonight."; 
+                }
+
+                if (!isInitialLoad) {
+                    const currentClouds = cloudsContainer.querySelectorAll('.cloud-parent');
+                    currentClouds.forEach(cloud => cloud.classList.add('cloud-exit-active'));
+                    cloudsContainer.classList.remove('active');
+                    setTimeout(() => {
+                        cloudsContainer.innerHTML = ''; 
+                        if (!starsContainer.classList.contains('active')) {
+                            createStars(200); 
+                            starsContainer.classList.add('active');
+                            starsContainer.classList.add('drifting'); 
+                        }
+                    }, CLOUD_EXIT_DURATION);
+                } else { 
+                     starsContainer.classList.add('active');
+                     starsContainer.classList.add('drifting');
+                     createStars(200);
+                     cloudsContainer.innerHTML = ''; 
+                     cloudsContainer.classList.remove('active');
+                }
+                startShootingStars();
+
+
+            } else { // Light theme
+                // Moon sets
+                moonTargetY = celestialExitY;
+                moon3D.visible = true; // Keep visible to animate out
+                moonGlow.classList.remove('active-glow');
+
+                // Sun rises
+                sun3D.position.y = celestialEnterY; // Start from top
+                sun3D.visible = true;               // Make visible
+                sunTargetY = celestialRiseY;        // Animate to rise position
+                sunGlow.classList.add('active-glow');
+                
+                sunLight.intensity = 1.5; 
+                moodLight.style.opacity = '0';
+                toggleSunIcon.classList.add('hidden');
+                toggleMoonIcon.classList.remove('hidden');
+                
+                 if(isInitialLoad) {
+                    pageTitle.textContent = "Sudeep Angamgari";
+                     pageSubtitle.textContent = "Data Engineer | Crafting intelligent data solutions.";
+                } else {
+                    pageTitle.textContent = "Sudeep Angamgari"; 
+                    pageSubtitle.textContent = "The sky is clear, with gentle clouds.";
+                }
+
+                if (!isInitialLoad) {
+                    const currentStars = starsContainer.querySelectorAll('.star');
+                    currentStars.forEach(star => star.classList.add('star-exit-active'));
+                    starsContainer.classList.remove('drifting'); 
+                    setTimeout(() => {
+                        starsContainer.classList.remove('active'); 
+                        starsContainer.innerHTML = ''; 
+                        if (!cloudsContainer.classList.contains('active')) {
+                             createClouds(8);
+                             cloudsContainer.classList.add('active');
+                        }
+                    }, STAR_EXIT_DURATION);
+                } else { 
+                    cloudsContainer.classList.add('active');
+                    createClouds(8);
+                    starsContainer.innerHTML = ''; 
+                    starsContainer.classList.remove('active');
+                    starsContainer.classList.remove('drifting');
+                }
+                stopShootingStars();
+            }
+        }
+
+        // Event listener for the toggle button
+        themeToggleButton.addEventListener('click', () => {
+            if (body.classList.contains('light')) {
+                setTheme('dark');
+            } else {
+                setTheme('light');
+            }
+        });
+        
+        // --- Graphical Cursor Logic ---
+        const interactiveElements = document.querySelectorAll('.interactive-element, .theme-toggle, .contact-link, .tech-tag'); 
+
+        document.addEventListener('mousemove', (e) => {
+            if (graphicalCursor) {
+                graphicalCursor.style.left = e.clientX + 'px';
+                graphicalCursor.style.top = e.clientY + 'px';
+            }
+            if (cursorFollower) { 
+                cursorFollower.style.left = e.clientX + 'px';
+                cursorFollower.style.top = e.clientY + 'px';
+            }
+        });
+
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                graphicalCursor.classList.add('hover-active');
+                cursorFollower.classList.add('hover-active');
+            });
+            el.addEventListener('mouseleave', () => {
+                graphicalCursor.classList.remove('hover-active');
+                cursorFollower.classList.remove('hover-active');
+            });
+        });
+
+        // --- Scroll Animation Logic ---
+        const scrollSections = document.querySelectorAll('.scroll-animate');
+        const observerOptions = {
+            root: null, 
+            rootMargin: '0px',
+            threshold: 0.2 
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        scrollSections.forEach(section => {
+            observer.observe(section);
+        });
+
+
+        // --- Initial Setup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            celestialCanvas.width = celestialCanvas.clientWidth;
+            celestialCanvas.height = celestialCanvas.clientHeight;
+            
+            initThreeJS(); 
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            
+            setTheme(savedTheme, true); 
+        });
+    </script>
+</body>
+</html>
