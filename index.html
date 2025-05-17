@@ -1,978 +1,545 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sudeep Angamgari - Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Custom font */
         body {
             font-family: 'Inter', sans-serif;
-            transition: background-color 0.5s ease, color 0.5s ease;
-            overflow-x: hidden; 
-            overflow-y: auto; 
-            /* cursor: none; */ 
+            background-color: #0A0A0A; /* Even darker, near pitch black */
+            color: #E5E5E5; /* Soft, off-white */
+            overflow-x: hidden;
+            position: relative; /* For film grain overlay */
         }
 
-        /* --- Graphical Mouse Pointers --- */
-        .graphical-cursor-common { 
+        /* Subtle Film Grain Overlay */
+        body::before {
+            content: "";
             position: fixed;
-            border-radius: 50%;
-            pointer-events: none; 
-            z-index: 9999; 
-            transform: translate(-50%, -50%); 
-            opacity: 0; 
-            will-change: left, top, width, height, background-color, border-color; 
-            transition: opacity 0.3s ease; 
-        }
-        body:hover .graphical-cursor-common { 
-            opacity: 1; 
-        }
-        #graphical-cursor { 
-            width: 28px; 
-            height: 28px;
-            background-color: rgba(0, 123, 255, 0.3); 
-            border: 2px solid rgba(0, 123, 255, 0.7);
-            transition: background-color 0.2s ease, border-color 0.2s ease, width 0.2s ease, height 0.2s ease, left 0.03s linear, top 0.03s linear; 
-        }
-        .dark #graphical-cursor {
-            background-color: rgba(165, 243, 252, 0.3); 
-            border: 2px solid rgba(165, 243, 252, 0.7);
-        }
-        #graphical-cursor.hover-active {
-            width: 36px;
-            height: 36px;
-            background-color: rgba(0, 123, 255, 0.5);
-        }
-        .dark #graphical-cursor.hover-active {
-            background-color: rgba(165, 243, 252, 0.5);
-        }
-        #cursor-follower { 
-            width: 40px; 
-            height: 40px;
-            border: 2px solid rgba(0, 123, 255, 0.5);
-            background-color: transparent; 
-            transition: background-color 0.2s ease, border-color 0.2s ease, width 0.2s ease, height 0.2s ease, left 0.15s ease-out, top 0.15s ease-out; 
-            z-index: 9998; 
-        }
-        .dark #cursor-follower {
-            border: 2px solid rgba(165, 243, 252, 0.5);
-        }
-        #cursor-follower.hover-active {
-            width: 20px; 
-            height: 20px;
-            background-color: rgba(0, 123, 255, 0.4);
-            border-width: 0px;
-        }
-        .dark #cursor-follower.hover-active {
-            background-color: rgba(165, 243, 252, 0.4);
-        }
-
-        /* --- 3D Scene Canvas --- */
-        #backgroundCanvas { 
-            position: fixed;
-            top: 0; 
+            top: 0;
             left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXVoaGhvb29ra2uCgoN+fn5wcHDZ2dnT09Pj4+Pe3t7JycnMzMzBwcGMjIyfn5+qqqp6enp0dHTW1tYAAACgoKAlpc3gAAAAAXRSTlMAQObYZgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAKpJREFUOI1jYBgFo2AUjIJRMApGwSigjwKxDcZNGGjEwExYXYSoEF2EUmYpYn0QJ1gZUgxJAUYGJPSxGVs0MSQJsLSA0MjRTDbGbHBsYBBkYAyGgAyYgYFBgKEpMhAUYJiV4Q0MmCD85ALsgaDhKwgPGATh8mYgqASCawsMhAcYArE+7GFsQhkYExkY27AMqAADAMIJANxAVQ4A8QZ0wHh9+APLAABN6010kM0nLgAAAABJRU5ErkJggg==');
+            opacity: 0.04; /* Very subtle */
+            pointer-events: none;
+            z-index: 9999;
+            animation: filmGrain 0.3s steps(3) infinite;
+        }
+
+        @keyframes filmGrain {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(1px, -1px); }
+            50% { transform: translate(-1px, 1px); }
+            75% { transform: translate(1px, 1px); }
+        }
+
+        .hero-bg {
+            position: relative;
+            overflow: hidden;
+        }
+        #particles-js {
+            position: absolute;
             width: 100%;
-            height: 100vh; 
-            z-index: -1;  
-            pointer-events: none; 
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0.1; /* Further reduced opacity for subtlety */
         }
-        
-        /* --- Atmospheric Glows --- */
-        .atmospheric-glow {
-            position: fixed;
-            border-radius: 50%;
+        .content-z {
+            position: relative;
+            z-index: 1;
+        }
+        .section-title {
+            font-size: 2.8rem; /* Slightly larger */
+            font-weight: 800; /* Bolder */
+            margin-bottom: 2.5rem; /* More spacing */
+            text-align: center;
+            color: #F0F0F0; /* Brighter white for titles */
+            letter-spacing: 0.05em; /* Slight letter spacing for classic feel */
+            text-transform: uppercase; /* Uppercase for a more formal/classic look */
+        }
+        .card {
+            background-color: #161616; /* Slightly darker card */
+            border-radius: 0.5rem; /* Less rounded for a sharper look */
+            padding: 1.75rem; /* More padding */
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(255, 255, 255, 0.02);
+            border: 1px solid #2a2a2a; /* Subtle border */
+        }
+        .card:hover {
+            transform: translateY(-8px) scale(1.01); /* More pronounced lift and slight scale */
+            box-shadow: 0 8px 16px rgba(220, 220, 220, 0.08), 0 0 20px rgba(200, 200, 200, 0.05); /* Softer, wider glow */
+            border-color: #555;
+        }
+        .tag {
+            background-color: #333333; /* Darker gray for tags */
+            color: #B0B0B0; /* Lighter gray for tag text */
+            padding: 0.3rem 0.85rem;
+            border-radius: 4px; /* Less rounded tags */
+            font-size: 0.8rem; 
+            margin-right: 0.6rem;
+            margin-bottom: 0.6rem;
+            display: inline-block;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .tag:hover {
+            background-color: #444444;
+            color: #FFFFFF;
+        }
+
+        /* Enhanced Scroll-in animation */
+        .scroll-animate {
             opacity: 0;
-            transition: opacity 0.8s ease-in-out;
-            pointer-events: none;
-            z-index: -1; 
-            transform: translate(-50%, -50%); 
+            transform: translateY(50px); /* Start further down */
+            transition: opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition-delay: 0.1s; /* Slight delay */
         }
-        #sun-glow {
-            width: 300px; 
-            height: 300px;
-            background: radial-gradient(circle, rgba(255, 223, 186, 0.3) 0%, rgba(255, 223, 186, 0) 70%);
-        }
-        #moon-glow {
-            width: 250px; 
-            height: 250px;
-            background: radial-gradient(circle, rgba(200, 200, 255, 0.15) 0%, rgba(200, 200, 255, 0) 70%);
-        }
-        .light #sun-glow.active-glow { opacity: 1; }
-        .dark #moon-glow.active-glow { opacity: 1; }
-
-
-        /* --- Mood Light (Dark Mode) --- */
-        .mood-light {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 300px; 
-            height: 150px; 
-            background-color: rgba(255, 223, 186, 0.08); 
-            border-radius: 50% 50% 0 0; 
-            filter: blur(60px); 
-            opacity: 0;
-            transition: opacity 0.7s ease-in-out;
-            z-index: -2; 
-        }
-        .dark .mood-light { opacity: 1; }
-
-        /* --- Stars (Dark Mode) --- */
-        #stars-container {
-            position: fixed;
-            inset: 0;
-            z-index: -1; 
-            overflow: hidden;
-            display: none; 
-        }
-        .dark #stars-container.active {
-            display: block;
-        }
-        .star {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-            opacity: 0; 
-            animation-name: twinkle;
-            animation-timing-function: ease-in-out;
-            animation-iteration-count: infinite;
-        }
-        .star-xs { width: 0.5px; height: 0.5px; }
-        .star-sm { width: 1px; height: 1px; }
-        .star-md { width: 1.5px; height: 1.5px; }
-        .star-lg { width: 2px; height: 2px; }
-        .star-xl { width: 2.5px; height: 2.5px; }
-
-        @keyframes twinkle {
-            0% { opacity: var(--star-opacity-min, 0.1); transform: scale(0.8); } 
-            50% { opacity: var(--star-opacity-max, 0.9); transform: scale(1.1); }
-            100% { opacity: var(--star-opacity-min, 0.1); transform: scale(0.8); }
-        }
-        @keyframes slowDrift { 
-            from { transform: translateX(0px) translateY(0px); }
-            to { transform: translateX(-50px) translateY(-30px); }
-        }
-        .dark #stars-container.drifting {
-             animation: slowDrift 180s linear infinite alternate;
-        }
-        .star.star-exit-active {
-            animation: starExitAnim 0.6s ease-out forwards;
-        }
-        @keyframes starExitAnim {
-            to {
-                opacity: 0;
-                transform: scale(0.2) translateY(-50px); 
-            }
-        }
-        
-        /* --- Shooting Stars --- */
-        #shooting-stars-container {
-            position: fixed;
-            inset: 0;
-            z-index: -1; 
-            overflow: hidden;
-            pointer-events: none;
-        }
-        .shooting-star {
-            position: absolute;
-            width: 2px; 
-            height: 80px; 
-            background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%);
-            border-radius: 1px / 50px; 
-            opacity: 0;
-            animation-name: shoot;
-            animation-timing-function: ease-out;
-            animation-iteration-count: 1;
-            transform-origin: top center;
-        }
-        @keyframes shoot {
-            0% { opacity: 0; transform: translateY(var(--start-y)) translateX(var(--start-x)) rotate(var(--angle)) scaleY(0.3); }
-            20% { opacity: 1; scaleY(1); }
-            80% { opacity: 1; }
-            100% { opacity: 0; transform: translateY(calc(var(--start-y) + 100vh)) translateX(calc(var(--start-x) + var(--end-x-offset))) rotate(var(--angle)) scaleY(1.5); }
-        }
-
-        /* --- 3D Mountains --- */
-        /* Styles for 3D mountains are handled in JS materials */
-
-        /* --- Clouds --- */
-        #clouds-container {
-            position: fixed;
-            inset: 0;
-            z-index: -1; 
-            overflow: hidden;
-            pointer-events: none;
-        }
-        .light #clouds-container.active {
-            display: block;
-        }
-        .cloud-parent { 
-            position: absolute;
-            opacity: 0; 
-            animation-name: driftCloud;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-        }
-        .cloud-puff { 
-            position: absolute;
-            border-radius: 50%; 
-        }
-        .light .cloud-puff {
-            background-color: rgba(255, 255, 255, 0.85); 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .dark .cloud-puff {
-            background-color: rgba(176, 190, 197, 0.6); 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        @keyframes driftCloud {
-            0% {
-                transform: translateX(-250px) translateY(var(--cloud-y)); 
-                opacity: 0;
-            }
-            10%, 90% { 
-                opacity: var(--cloud-opacity);
-            }
-            100% {
-                transform: translateX(calc(100vw + 250px)) translateY(var(--cloud-y)); 
-                opacity: 0;
-            }
-        }
-        .cloud-parent.cloud-exit-active {
-            animation-name: cloudExitAnim; 
-            animation-duration: 0.7s;
-            animation-timing-function: ease-in;
-            animation-fill-mode: forwards;
-            animation-iteration-count: 1; 
-        }
-        @keyframes cloudExitAnim {
-            to {
-                opacity: 0;
-                transform: translateY(-100px) scale(0.6) translateX(var(--cloud-current-x, 0)); 
-            }
-        }
-
-        /* --- Theme Toggle Button Container --- */
-        #theme-toggle-button-container {
-            position: fixed;
-            top: 1.5rem; 
-            right: 1.5rem; 
-            z-index: 50; 
-        }
-        .theme-toggle {
-            padding: 0.75rem; 
-            border-radius: 9999px; 
-            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-            display: flex; align-items: center; justify-content: center; 
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer; 
-        }
-        .theme-toggle:hover { box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); }
-        .theme-toggle svg { width: 24px; height: 24px; }
-
-        /* --- Theme Specific Styles --- */
-        .dark { background-color: #0f172a; color: #e2e8f0; } 
-        .dark .theme-toggle { background-color: #334155; color: #e2e8f0; } 
-        .dark .theme-toggle:hover { background-color: #1e293b; }
-        .dark #graphical-cursor {
-            background-color: rgba(165, 243, 252, 0.3); 
-            border: 2px solid rgba(165, 243, 252, 0.7);
-        }
-         .dark #cursor-follower {
-            border: 2px solid rgba(165, 243, 252, 0.5);
-        }
-        .dark #graphical-cursor.hover-active {
-            background-color: rgba(165, 243, 252, 0.5);
-        }
-        .dark #cursor-follower.hover-active {
-            background-color: rgba(165, 243, 252, 0.4);
-        }
-
-
-        .light { background-color: #cce7ff; color: #1a202c; } 
-        .light .theme-toggle { background-color: #fde047; color: #1a202c; }
-        .light .theme-toggle:hover { background-color: #facc15; }
-        .light #graphical-cursor {
-            background-color: rgba(59, 130, 246, 0.3); 
-            border: 2px solid rgba(59, 130, 246, 0.7);
-        }
-        .light #cursor-follower {
-            border: 2px solid rgba(59, 130, 246, 0.5);
-        }
-        .light #graphical-cursor.hover-active {
-            background-color: rgba(59, 130, 246, 0.5);
-        }
-        .light #cursor-follower.hover-active {
-            background-color: rgba(59, 130, 246, 0.4);
-        }
-
-
-        /* Portfolio Section Styling */
-        .portfolio-section {
-            background-color: rgba(255, 255, 255, 0.7); 
-            backdrop-filter: blur(10px);
-            border-radius: 0.75rem; 
-            padding: 1.5rem; 
-            margin-bottom: 2rem; 
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .portfolio-section.is-visible { 
+        .scroll-animate.is-visible {
             opacity: 1;
             transform: translateY(0);
         }
+        .nav-link {
+            transition: color 0.3s ease, letter-spacing 0.3s ease;
+            padding: 0.5rem 0.25rem; /* Adjust padding for underline effect */
+            position: relative;
+            text-decoration: none;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            display: block;
+            margin-top: 4px; /* Space between text and underline */
+            right: 0;
+            background: #FFFFFF;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #FFFFFF;
+            letter-spacing: 0.05em;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+            background: #FFFFFF;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111111; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333333; 
+            border-radius: 2px;
+            border: 2px solid #111111;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444444;
+        }
 
-        .dark .portfolio-section {
-            background-color: rgba(30, 41, 59, 0.7); 
-        }
-        .portfolio-section h2 {
-            font-size: 1.875rem; 
-            font-weight: 700;
-            margin-bottom: 1rem; 
-            border-bottom: 2px solid; 
-            padding-bottom: 0.5rem; 
-        }
-        .light .portfolio-section h2 { border-color: #e5e7eb; } 
-        .dark .portfolio-section h2 { border-color: #4b5563; } 
-
-        .portfolio-section h3 {
-            font-size: 1.25rem; 
-            font-weight: 600;
-            margin-top: 1rem;
-            margin-bottom: 0.25rem;
-        }
-         .portfolio-section h4 {
-            font-size: 1rem; 
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-            color: #6b7280; 
-        }
-        .dark .portfolio-section h4 { color: #9ca3af; } 
-
-        .portfolio-section ul {
-            list-style-type: none; 
-            padding-left: 0; 
-            margin-bottom: 1rem;
-        }
-        .portfolio-section li { 
-            margin-bottom: 0.75rem; 
-            display: flex; 
-            align-items: flex-start; 
-        }
-        .portfolio-section li svg { 
-            width: 1.25em; 
-            height: 1.25em;
-            margin-right: 0.75rem; 
-            flex-shrink: 0; 
-            margin-top: 0.125rem; 
-        }
-        .light .portfolio-section li svg { fill: #3b82f6; } 
-        .dark .portfolio-section li svg { fill: #60a5fa; } 
-
-
-        .portfolio-section .tech-tag {
+        /* Button Styling */
+        .btn {
             display: inline-block;
-            background-color: #e0e7ff; 
-            color: #3730a3; 
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.875rem; 
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-            cursor: pointer; 
+            font-weight: 600; 
+            padding: 0.85rem 1.75rem; /* Larger padding */
+            border-radius: 4px; /* Sharper edges */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background-color 0.3s ease, color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.9rem;
         }
-        .dark .portfolio-section .tech-tag {
-            background-color: #374151; 
-            color: #d1d5db; 
+        .btn-primary {
+            background-color: #E0E0E0; /* Light gray, almost white */
+            color: #111111; /* Black text */
         }
-        .contact-link {
-            display: inline-block;
-            margin-right: 1rem;
-            transition: color 0.2s ease;
-            cursor: pointer; 
+        .btn-primary:hover {
+            background-color: #FFFFFF;
+            color: #000000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255,255,255,0.15);
         }
-        .contact-link:hover {
-             color: #3b82f6; 
+        .btn-secondary {
+            background-color: #222222; /* Dark gray */
+            color: #D0D0D0;
+            border: 1px solid #444444;
         }
-        .dark .contact-link:hover {
-            color: #60a5fa; 
+        .btn-secondary:hover {
+            background-color: #333333;
+            border-color: #666666;
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(150,150,150,0.1);
+        }
+        .btn-outline {
+            background-color: transparent;
+            color: #B0B0B0;
+            border: 1px solid #555555;
+        }
+        .btn-outline:hover {
+            background-color: #222222;
+            border-color: #777777;
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(150,150,150,0.05);
+        }
+
+        /* Mobile Menu Styling for Transition */
+        #mobile-menu {
+            z-index: 45; 
         }
 
     </style>
 </head>
-<body class="light transition-colors duration-500">
+<body class="antialiased">
 
-    <div id="graphical-cursor" class="graphical-cursor-common"></div>
-    <div id="cursor-follower" class="graphical-cursor-common"></div>
-
-    <canvas id="backgroundCanvas"></canvas> 
-    <div id="sun-glow" class="atmospheric-glow"></div>
-    <div id="moon-glow" class="atmospheric-glow"></div>
-    <div id="shooting-stars-container"></div>
-
-
-    <div id="stars-container"></div>
-    <div id="clouds-container"></div>
-    <div id="mood-light" class="mood-light"></div>
-
-    <div id="theme-toggle-button-container">
-        <button id="theme-toggle-button" class="theme-toggle">
-            <svg id="toggle-moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" /></svg>
-            <svg id="toggle-sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-6.364-.386 1.591-1.591M3 12h2.25m.386-6.364 1.591 1.591M12 3v2.25" /></svg>
-        </button>
-    </div>
-
-    <div class="min-h-screen flex flex-col items-center justify-start pt-24 p-6 relative z-10"> 
-        <div class="text-center mb-12">
-            <h1 id="page-title" class="text-4xl md:text-5xl font-bold mb-2">Sudeep Angamgari</h1>
-            <div id="contact-info" class="text-md md:text-lg mb-4">
-                <a href="tel:+18402344965" class="contact-link interactive-element">+1 (840) 234 4965</a> |
-                <a href="mailto:sudeepangamgari@gmail.com" class="contact-link interactive-element">sudeepangamgari@gmail.com</a> |
-                <a href="https://linkedin.com/in/sudeepangamgari" target="_blank" rel="noopener noreferrer" class="contact-link interactive-element">LinkedIn</a> |
-                <a href="https://github.com/sudeepreddyyy" target="_blank" rel="noopener noreferrer" class="contact-link interactive-element">GitHub</a>
+    <nav class="bg-black/70 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 shadow-2xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20"> <div class="flex items-center">
+                    <a href="#hero" class="text-3xl font-bold text-white tracking-wider">SA</a>
+                </div>
+                <div class="hidden md:block">
+                     <div class="ml-10 flex items-baseline space-x-6"> <a href="#about" class="nav-link text-gray-300 text-sm font-medium">About</a>
+                        <a href="#experience" class="nav-link text-gray-300 text-sm font-medium">Experience</a>
+                        <a href="#projects" class="nav-link text-gray-300 text-sm font-medium">Projects</a>
+                        <a href="#skills" class="nav-link text-gray-300 text-sm font-medium">Skills</a>
+                        <a href="#education" class="nav-link text-gray-300 text-sm font-medium">Education</a>
+                        <a href="#contact" class="nav-link text-gray-300 text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mobile-menu-button" class="bg-gray-800/50 inline-flex items-center justify-center p-2.5 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <p id="page-subtitle" class="text-lg md:text-xl">Data Engineer | Crafting intelligent data solutions.</p>
         </div>
-        
-        <div class="w-full max-w-4xl"> 
-            <section id="experience" class="portfolio-section scroll-animate">
-                <h2>Professional Experience</h2>
-                <div>
-                    <h3>Data Analytical Engineer</h3>
-                    <h4>Purdue University | Jan 2024 - Dec 2024</h4>
-                    <ul>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Architected AWS-based scalable data pipelines using Python, S3, and Lambda, accelerating ingestion of 100K+ daily sales records; improved processing speed by 30%.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Developed real-time inventory tracking solutions using AWS S3, Lambda, and SNS, decreasing stock-out incidents by 25%.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Deployed event-driven anomaly detection systems leveraging AWS Lambda, SQS, and SNS, reducing incident response time by 60%.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Created interactive Power BI dashboards, enhancing sales and inventory decision-making efficiency by 40%.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Enforced data security through IAM policies and access controls.</li>
+        <div id="mobile-menu" 
+             class="md:hidden fixed inset-x-0 top-20 bg-black/90 backdrop-blur-md shadow-xl transition-all duration-300 ease-in-out opacity-0 invisible transform -translate-y-6 pointer-events-none">
+            <div class="px-2 pt-2 pb-4 space-y-1 sm:px-3 border-t border-gray-700/50">
+                <a href="#about" class="nav-link text-gray-200 hover:text-white block px-3 py-3 rounded-md text-base font-medium">About</a>
+                <a href="#experience" class="nav-link text-gray-200 hover:text-white block px-3 py-3 rounded-md text-base font-medium">Experience</a>
+                <a href="#projects" class="nav-link text-gray-200 hover:text-white block px-3 py-3 rounded-md text-base font-medium">Projects</a>
+                <a href="#skills" class="nav-link text-gray-200 hover:text-white block px-3 py-3 rounded-md text-base font-medium">Skills</a>
+                <a href="#education" class="nav-link text-gray-200 hover:text-white block px-3 py-3 rounded-md text-base font-medium">Education</a>
+                <a href="#contact" class="nav-link text-gray-200 hover:text-white block px-3 py-3 rounded-md text-base font-medium">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="hero" class="hero-bg min-h-screen flex items-center justify-center text-center px-4 pt-20 sm:pt-0">
+        <div id="particles-js"></div>
+        <div class="content-z scroll-animate">
+            <h1 class="text-6xl md:text-8xl font-extrabold mb-6 text-gray-50 tracking-tight">
+                Sudeep <span class="text-white">Angamgari</span>
+            </h1>
+            <p id="typed-tagline" class="text-2xl md:text-4xl text-gray-300 mb-10 font-light"></p>
+            <div class="space-x-3 sm:space-x-5">
+                <a href="https://linkedin.com/in/sudeepangamgari" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    LinkedIn
+                </a>
+                <a href="https://github.com/sudeepreddyyy" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                    GitHub
+                </a>
+                 <a href="#contact" class="btn btn-outline">
+                    Contact Me
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 md:py-32 px-4">
+        <div class="max-w-3xl mx-auto text-center scroll-animate">
+            <h2 class="section-title">About Me</h2>
+            <p class="text-lg md:text-xl text-gray-300 leading-relaxed md:leading-loose">
+                A dedicated and innovative Data Engineer, I hold a Master's in Computer Information Technology from Purdue University. My expertise lies in crafting robust, scalable data pipelines and harnessing real-time data with a focus on AWS cloud technologies. I thrive on transforming complex datasets into strategic assets, driving business intelligence and operational excellence through Python, SQL, Big Data frameworks, and applied Machine Learning.
+            </p>
+        </div>
+    </section>
+
+    <section id="experience" class="py-20 md:py-32 bg-black/20 px-4"> 
+        <div class="max-w-5xl mx-auto">
+            <h2 class="section-title scroll-animate">Professional Experience</h2>
+            <div class="space-y-16"> 
+                <div class="card scroll-animate" style="transition-delay: 0.2s;">
+                    <h3 class="text-2xl font-semibold text-gray-100 mb-1.5">Data Analytical Engineer</h3>
+                    <p class="text-gray-500 mb-3 text-sm">Purdue University | Jan 2024 - Dec 2024</p>
+                    <ul class="list-disc list-outside ml-5 text-gray-300 space-y-2.5 text-base">
+                        <li>Architected AWS-based scalable data pipelines (Python, S3, Lambda) for 100K+ daily sales records, improving processing speed by 30%.</li>
+                        <li>Developed real-time inventory tracking solutions (AWS S3, Lambda, SNS), decreasing stock-out incidents by 25%.</li>
+                        <li>Deployed event-driven anomaly detection systems (AWS Lambda, SQS, SNS), reducing incident response time by 60%.</li>
+                        <li>Created interactive Power BI dashboards, enhancing sales and inventory decision-making efficiency by 40%.</li>
                     </ul>
                 </div>
-                <div>
-                    <h3>Data Engineer</h3>
-                    <h4>JLP Partnership | Mar 2021 - Dec 2022</h4>
-                    <ul>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Designed and implemented real-time data pipelines using AWS Kinesis, Lambda, Redshift, and S3, processing 2M+ daily sales transactions with 99% uptime and reducing data ingestion lag by 40%.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Streamlined PySpark batch jobs and refactored PostgreSQL queries, reducing compute time by 35% and improving execution speed.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Automated real-time sales data analysis using AWS Lambda and Pandas, boosting data processing efficiency by 40%.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Built a Flask-based CRUD API, improving data retrieval speed by 30% and enabling seamless frontend integration.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Pioneered interactive Power BI dashboards offering real-time visibility into sales cycles and campaign effectiveness; cut weekly reporting time by 6 hours.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Maintained agile workflows, test-driven development, and CI/CD practices for continuous integration and deployment.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Collaborated with ML teams to construct robust data pipelines supporting model training and operational forecasting.</li>
+                <div class="card scroll-animate" style="transition-delay: 0.3s;">
+                    <h3 class="text-2xl font-semibold text-gray-100 mb-1.5">Data Engineer</h3>
+                    <p class="text-gray-500 mb-3 text-sm">JLP Partnership | Mar 2021 - Dec 2022</p>
+                    <ul class="list-disc list-outside ml-5 text-gray-300 space-y-2.5 text-base">
+                        <li>Designed real-time data pipelines (AWS Kinesis, Lambda, Redshift, S3) for 2M+ daily sales transactions, 99% uptime, reduced data ingestion lag by 40%.</li>
+                        <li>Streamlined PySpark batch jobs and refactored PostgreSQL queries, reducing compute time by 35%.</li>
+                        <li>Automated real-time sales data analysis (AWS Lambda, Pandas), boosting data processing efficiency by 40%.</li>
                     </ul>
                 </div>
-                <div>
-                    <h3>Junior Data Engineer</h3>
-                    <h4>BIS Pvt Ltd | Jun 2020 - Feb 2021</h4>
-                    <ul>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Constructed end-to-end ETL pipelines with Python and SQL to process ad performance data, increasing pipeline throughput by 30%.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Designed Power BI dashboards to track ad spend, CTR, and engagement, reducing manual reporting time by 40%.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Enhanced Snowflake-based data warehouses, resulting in a 30% gain in query responsiveness.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Contributed to the migration of 5 TB of on-premise data to AWS S3/Redshift, lowering query latency by 25% and reducing cloud costs by 15%.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Supported data cleansing and schema restructuring efforts, boosting query efficiency by 15%.</li>
+                <div class="card scroll-animate" style="transition-delay: 0.4s;">
+                    <h3 class="text-2xl font-semibold text-gray-100 mb-1.5">Junior Data Engineer</h3>
+                    <p class="text-gray-500 mb-3 text-sm">BIS Pvt Ltd | Jun 2020 - Feb 2021</p>
+                    <ul class="list-disc list-outside ml-5 text-gray-300 space-y-2.5 text-base">
+                        <li>Constructed end-to-end ETL pipelines (Python, SQL) for ad performance data, increasing pipeline throughput by 30%.</li>
+                        <li>Designed Power BI dashboards to track ad spend, CTR, and engagement, reducing manual reporting time by 40%.</li>
+                        <li>Enhanced Snowflake-based data warehouses, resulting in a 30% gain in query responsiveness.</li>
                     </ul>
                 </div>
-            </section>
+            </div>
+        </div>
+    </section>
 
-            <section id="projects" class="portfolio-section scroll-animate">
-                <h2>Projects</h2>
-                <div>
-                    <h3>Real-Time Stock Market Data Pipeline using Kafka and AWS</h3>
-                    <p><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="inline-block w-5 h-5 mr-2"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Constructed a real-time stock data pipeline processing 500K+ daily transactions, reducing data latency by 30% and query execution time by 25% through efficient ETL workflows.</p>
-                    <p class="mt-2"><strong>Tech:</strong> <span class="tech-tag interactive-element">Apache Kafka</span> <span class="tech-tag interactive-element">AWS Glue</span> <span class="tech-tag interactive-element">AWS Redshift</span> <span class="tech-tag interactive-element">AWS S3</span> <span class="tech-tag interactive-element">Python</span></p>
+    <section id="projects" class="py-20 md:py-32 px-4">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="section-title scroll-animate">My Projects</h2>
+            <div class="grid md:grid-cols-2 gap-10"> 
+                <div class="card scroll-animate" style="transition-delay: 0.2s;">
+                    <h3 class="text-xl font-semibold text-gray-100 mb-2.5">Real-Time Stock Market Data Pipeline</h3>
+                    <p class="text-gray-400 mb-4 text-sm leading-relaxed">Processed 500K+ daily transactions, reducing data latency by 30% and query execution time by 25% through efficient ETL workflows.</p>
+                    <div class="flex flex-wrap">
+                        <span class="tag">Apache Kafka</span><span class="tag">AWS Glue</span><span class="tag">AWS Redshift</span><span class="tag">AWS S3</span><span class="tag">Python</span>
+                    </div>
                 </div>
-                <div class="mt-6">
-                    <h3>Voice-Controlled UAV System (AirSim, ChatGPT, YOLOv8)</h3>
-                    <p><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="inline-block w-5 h-5 mr-2"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Engineered a voice-controlled AI UAV using GPT-4 for natural language input and YOLOv8 for crop detection. Achieved a 50% command latency reduction and validated performance in simulated agriculture missions.</p>
-                    <p class="mt-2"><strong>Tech:</strong> <span class="tech-tag interactive-element">Python</span> <span class="tech-tag interactive-element">LLM (ChatGPT)</span> <span class="tech-tag interactive-element">YOLOv8</span> <span class="tech-tag interactive-element">AirSim</span></p>
+                <div class="card scroll-animate" style="transition-delay: 0.3s;">
+                    <h3 class="text-xl font-semibold text-gray-100 mb-2.5">Voice-Controlled UAV System</h3>
+                    <p class="text-gray-400 mb-4 text-sm leading-relaxed">Engineered a voice-controlled AI UAV using GPT-4 for natural language input and YOLOv8 for crop detection. Achieved a 50% command latency reduction.</p>
+                    <div class="flex flex-wrap">
+                        <span class="tag">Python</span><span class="tag">LLM</span><span class="tag">YOLOv8</span><span class="tag">AirSim</span>
+                    </div>
                 </div>
-                <div class="mt-6">
-                    <h3>Conversational Recommendation System</h3>
-                    <p><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="inline-block w-5 h-5 mr-2"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Designed a personalized recommendation engine using an LLM-powered chatbot and Neo4j to model user preferences and relationship patterns for context-aware suggestions.</p>
-                    <p class="mt-2"><strong>Tech:</strong> <span class="tech-tag interactive-element">React</span> <span class="tech-tag interactive-element">Python</span> <span class="tech-tag interactive-element">OpenAI API</span> <span class="tech-tag interactive-element">Neo4j</span></p>
+                <div class="card scroll-animate" style="transition-delay: 0.2s;"> 
+                    <h3 class="text-xl font-semibold text-gray-100 mb-2.5">Conversational Recommendation System</h3>
+                    <p class="text-gray-400 mb-4 text-sm leading-relaxed">Designed a personalized recommendation engine using an LLM-powered chatbot and Neo4j to model user preferences for context-aware suggestions.</p>
+                    <div class="flex flex-wrap">
+                        <span class="tag">React</span><span class="tag">Python</span><span class="tag">OpenAI API</span><span class="tag">Neo4j</span>
+                    </div>
                 </div>
-                <div class="mt-6">
-                    <h3>ETL Pipeline Optimization for Big Data</h3>
-                    <p><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="inline-block w-5 h-5 mr-2"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /></svg>Built ETL pipeline for healthcare datasets using Apache Airflow and AWS Glue; improved data processing speed by 30%.</p>
-                    <p class="mt-2"><strong>Tech:</strong> <span class="tech-tag interactive-element">Apache Airflow</span> <span class="tech-tag interactive-element">AWS Glue</span> <span class="tech-tag interactive-element">Python</span> <span class="tech-tag interactive-element">SQL</span></p>
+                <div class="card scroll-animate" style="transition-delay: 0.3s;">
+                    <h3 class="text-xl font-semibold text-gray-100 mb-2.5">ETL Pipeline Optimization</h3>
+                    <p class="text-gray-400 mb-4 text-sm leading-relaxed">Built ETL pipeline for healthcare datasets using Apache Airflow and AWS Glue; improved data processing speed by 30%.</p>
+                    <div class="flex flex-wrap">
+                        <span class="tag">Apache Airflow</span><span class="tag">AWS Glue</span><span class="tag">Python</span><span class="tag">SQL</span>
+                    </div>
                 </div>
-            </section>
+            </div>
+        </div>
+    </section>
 
-            <section id="skills" class="portfolio-section scroll-animate">
-                <h2>Technical Skills</h2>
-                <div>
-                    <h3>Cloud:</h3>
-                    <p><span class="tech-tag interactive-element">AWS (S3</span> <span class="tech-tag interactive-element">Redshift</span> <span class="tech-tag interactive-element">Glue</span> <span class="tech-tag interactive-element">Kinesis</span> <span class="tech-tag interactive-element">Lambda</span> <span class="tech-tag interactive-element">SNS</span> <span class="tech-tag interactive-element">SQS</span> <span class="tech-tag interactive-element">CloudWatch</span> <span class="tech-tag interactive-element">IAM)</span></p>
-                    <h3>Big Data:</h3>
-                    <p><span class="tech-tag interactive-element">Apache Kafka</span> <span class="tech-tag interactive-element">Spark (PySpark)</span></p>
-                    <h3>ETL:</h3>
-                    <p><span class="tech-tag interactive-element">Python (Pandas, Flask)</span> <span class="tech-tag interactive-element">SQL (PostgreSQL, MySQL)</span> <span class="tech-tag interactive-element">Apache Airflow</span></p>
-                    <h3>Visualization:</h3>
-                    <p><span class="tech-tag interactive-element">Power BI</span> <span class="tech-tag interactive-element">Tableau</span> <span class="tech-tag interactive-element">Pivot tables and VLOOKUP</span></p>
-                    <h3>DevOps:</h3>
-                    <p><span class="tech-tag interactive-element">Git</span> <span class="tech-tag interactive-element">GitHub</span></p>
-                    <h3>Tools:</h3>
-                    <p><span class="tech-tag interactive-element">Jupyter</span> <span class="tech-tag interactive-element">VSCode</span> <span class="tech-tag interactive-element">JIRA</span></p>
-                    <h3>ML/AI:</h3>
-                    <p><span class="tech-tag interactive-element">XGBoost</span> <span class="tech-tag interactive-element">LDA</span> <span class="tech-tag interactive-element">NLP</span> <span class="tech-tag interactive-element">YOLOv8</span> <span class="tech-tag interactive-element">LLM</span></p>
+    <section id="skills" class="py-20 md:py-32 bg-black/20 px-4"> 
+        <div class="max-w-5xl mx-auto">
+            <h2 class="section-title scroll-animate">Technical Skills</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="card scroll-animate" style="transition-delay: 0.2s;">
+                    <h4 class="text-xl font-semibold text-gray-100 mb-3">Cloud Platforms</h4>
+                    <p class="text-gray-300 text-sm">AWS (S3, Redshift, Glue, Kinesis, Lambda, SNS, SQS, CloudWatch, IAM)</p>
                 </div>
-            </section>
+                <div class="card scroll-animate" style="transition-delay: 0.25s;">
+                    <h4 class="text-xl font-semibold text-gray-100 mb-3">Big Data</h4>
+                    <p class="text-gray-300 text-sm">Apache Kafka, Spark (PySpark)</p>
+                </div>
+                <div class="card scroll-animate" style="transition-delay: 0.3s;">
+                    <h4 class="text-xl font-semibold text-gray-100 mb-3">ETL & Data Processing</h4>
+                    <p class="text-gray-300 text-sm">Python (Pandas, Flask), SQL (PostgreSQL, MySQL), Apache Airflow</p>
+                </div>
+                <div class="card scroll-animate" style="transition-delay: 0.35s;">
+                    <h4 class="text-xl font-semibold text-gray-100 mb-3">Data Visualization</h4>
+                    <p class="text-gray-300 text-sm">Power BI, Tableau, Matplotlib, Seaborn</p>
+                </div>
+                <div class="card scroll-animate" style="transition-delay: 0.4s;">
+                    <h4 class="text-xl font-semibold text-gray-100 mb-3">DevOps & Tools</h4>
+                    <p class="text-gray-300 text-sm">Git, GitHub, Docker, CI/CD, Jupyter, VSCode, JIRA</p>
+                </div>
+                <div class="card scroll-animate" style="transition-delay: 0.45s;">
+                    <h4 class="text-xl font-semibold text-gray-100 mb-3">Machine Learning / AI</h4>
+                    <p class="text-gray-300 text-sm">XGBoost, LDA, NLP, YOLOv8, LLMs, Scikit-learn</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            <section id="education" class="portfolio-section scroll-animate">
-                <h2>Education</h2>
-                <div>
-                    <h3>Master of Science in Computer Information Technology</h3>
-                    <h4>Purdue University | Jan 2023 - Dec 2024</h4>
-                </div>
-            </section>
-        </div> </div>
+    <section id="education" class="py-20 md:py-32 px-4">
+        <div class="max-w-3xl mx-auto text-center scroll-animate">
+            <h2 class="section-title">Education</h2>
+            <div class="card">
+                <h3 class="text-2xl font-semibold text-gray-100 mb-1.5">Master of Science in Computer Information Technology</h3>
+                <p class="text-gray-400 text-lg">Purdue University</p>
+                <p class="text-gray-500 text-sm">Jan 2023 - Dec 2024</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 md:py-32 bg-black/20 px-4"> 
+        <div class="max-w-3xl mx-auto text-center scroll-animate">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="text-lg md:text-xl text-gray-300 mb-10 leading-relaxed">
+                I'm actively seeking new opportunities and collaborations. If you have a project in mind or just want to connect, feel free to reach out.
+            </p>
+            <div class="mb-8">
+                 <a href="mailto:sudeepangamgari@gmail.com" class="btn btn-primary text-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2.5 inline-block -mt-0.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                    </svg>
+                    Send an Email
+                </a>
+            </div>
+            <p class="text-gray-400 text-lg mb-1">sudeepangamgari@gmail.com</p>
+            <p class="text-gray-400 text-lg mb-10">+1 (840) 234 4965</p>
+            
+             <div class="flex justify-center space-x-8">
+                <a href="https://linkedin.com/in/sudeepangamgari" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-200 transition-colors duration-300 transform hover:scale-110">
+                    <svg class="w-9 h-9" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/></svg>
+                </a>
+                <a href="https://github.com/sudeepreddyyy" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-200 transition-colors duration-300 transform hover:scale-110">
+                    <svg class="w-9 h-9" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.565 21.799 24 17.301 24 12c0-6.627-5.373-12-12-12z" clip-rule="evenodd"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center py-10 text-gray-600 text-xs border-t border-gray-800/50">
+        <p>&copy; <span id="currentYear"></span> Sudeep Angamgari. All Rights Reserved.</p>
+        <p class="mt-1">Crafted with <span class="text-gray-500 opacity-75">&hearts;</span> and Precision | Inspired by Classic Cinema</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
     <script>
-        // DOM Elements
-        const body = document.body;
-        const themeToggleButton = document.getElementById('theme-toggle-button');
-        const moodLight = document.getElementById('mood-light');
-        const toggleMoonIcon = document.getElementById('toggle-moon-icon'); 
-        const toggleSunIcon = document.getElementById('toggle-sun-icon');   
-        const pageTitle = document.getElementById('page-title');
-        const pageSubtitle = document.getElementById('page-subtitle');
-        const starsContainer = document.getElementById('stars-container');
-        const cloudsContainer = document.getElementById('clouds-container');
-        const celestialCanvas = document.getElementById('backgroundCanvas'); 
-        const graphicalCursor = document.getElementById('graphical-cursor'); 
-        const cursorFollower = document.getElementById('cursor-follower'); 
-        const sunGlow = document.getElementById('sun-glow');
-        const moonGlow = document.getElementById('moon-glow');
-        const shootingStarsContainer = document.getElementById('shooting-stars-container');
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileNavLinks = document.querySelectorAll('#mobile-menu a[href^="#"]'); 
 
-
-        const CLOUD_EXIT_DURATION = 700; 
-        const STAR_EXIT_DURATION = 600; 
-
-        // --- Three.js Setup ---
-        let scene, camera, renderer, sun3D, moon3D, sunLight, moonSphere, moonOcclusionSphere;
-        let sunTargetY, moonTargetY;
-        const celestialEnterY = 7;   
-        const celestialRiseY = 2.5;  
-        const celestialExitY = -7;   
-        const animationSpeed = 0.04; 
-        const celestialXPosition = 0; 
-
-        function initThreeJS() {
-            scene = new THREE.Scene();
+        mobileMenuButton.addEventListener('click', () => {
+            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
             
-            camera = new THREE.PerspectiveCamera(75, celestialCanvas.clientWidth / celestialCanvas.clientHeight, 0.1, 1000);
-            camera.position.z = 5; 
-
-            renderer = new THREE.WebGLRenderer({ 
-                canvas: celestialCanvas, 
-                alpha: true, 
-                antialias: true 
-            });
-            renderer.setSize(celestialCanvas.clientWidth, celestialCanvas.clientHeight);
-            renderer.setPixelRatio(window.devicePixelRatio); 
-
-            // Lighting
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); 
-            scene.add(ambientLight);
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7); 
-            directionalLight.position.set(3, 5, 5); 
-            scene.add(directionalLight);
-
-            // 3D Sun
-            const sunSegments = 64; 
-            const sunGeometry = new THREE.SphereGeometry(1, sunSegments, sunSegments); 
-            const sunMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0xffdd00, 
-                emissive: 0xffcc33, 
-                emissiveIntensity: 1.5, 
-                roughness: 0.7, 
-                metalness: 0.1
-            });
-            sun3D = new THREE.Mesh(sunGeometry, sunMaterial);
-            sun3D.position.x = celestialXPosition; 
-            sun3D.position.y = celestialExitY; // Start off-screen
-            sun3D.visible = false; 
+            mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
             
-            sunLight = new THREE.PointLight(0xffddaa, 1.5, 50); 
-            sun3D.add(sunLight); 
-            scene.add(sun3D);
+            mobileMenu.classList.toggle('opacity-0', isExpanded);
+            mobileMenu.classList.toggle('invisible', isExpanded);
+            mobileMenu.classList.toggle('-translate-y-6', isExpanded); 
+            mobileMenu.classList.toggle('pointer-events-none', isExpanded);
 
-            // 3D Half Moon (Group of two spheres)
-            moon3D = new THREE.Group(); 
-            moon3D.position.x = celestialXPosition;
-            moon3D.position.y = celestialExitY; // Start off-screen
-            moon3D.visible = false; 
-            const moonRadius = 0.8;
-            const moonSegments = 64; 
+            mobileMenu.classList.toggle('opacity-100', !isExpanded);
+            mobileMenu.classList.toggle('visible', !isExpanded);
+            mobileMenu.classList.toggle('translate-y-0', !isExpanded); 
+            mobileMenu.classList.toggle('pointer-events-auto', !isExpanded);
 
-            // Lit part of the moon
-            const moonSphereGeometry = new THREE.SphereGeometry(moonRadius, moonSegments, moonSegments);
-            const moonSphereMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0xe0e0e0, 
-                roughness: 0.9,   
-                metalness: 0.1,
-            });
-            moonSphere = new THREE.Mesh(moonSphereGeometry, moonSphereMaterial);
-            moon3D.add(moonSphere);
+            mobileMenuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
 
-            // Occlusion sphere (dark part to create half-moon)
-            const occlusionGeometry = new THREE.SphereGeometry(moonRadius, moonSegments, moonSegments);
-            const occlusionMaterial = new THREE.MeshBasicMaterial({ color: 0x0f172a }); 
-            moonOcclusionSphere = new THREE.Mesh(occlusionGeometry, occlusionMaterial);
-            moonOcclusionSphere.position.set(moonRadius * 0.99, 0, 0.01); 
-            moon3D.add(moonOcclusionSphere);
-            
-            scene.add(moon3D);
-
-            sunTargetY = celestialExitY; 
-            moonTargetY = celestialExitY; 
-
-            animateThreeJS();
-        }
-
-        function animateThreeJS() {
-            requestAnimationFrame(animateThreeJS);
-
-            if (sun3D) { 
-                sun3D.position.y += (sunTargetY - sun3D.position.y) * animationSpeed;
-                sun3D.rotation.y += 0.001; 
-                // Update sun glow position
-                if (sunGlow && sun3D.visible) {
-                    const sunScreenPos = toScreenPosition(sun3D, camera);
-                    sunGlow.style.left = `${sunScreenPos.x}px`;
-                    sunGlow.style.top = `${sunScreenPos.y}px`;
-                }
-            }
-            
-            if (moon3D) { 
-                moon3D.position.y += (moonTargetY - moon3D.position.y) * animationSpeed;
-                moon3D.rotation.y += 0.0015; 
-                // Update moon glow position
-                if (moonGlow && moon3D.visible) {
-                    const moonScreenPos = toScreenPosition(moon3D, camera);
-                    moonGlow.style.left = `${moonScreenPos.x}px`;
-                    moonGlow.style.top = `${moonScreenPos.y}px`;
-                }
-            }
-            
-            renderer.render(scene, camera);
-        }
-        
-        // Helper function to convert 3D position to 2D screen position
-        function toScreenPosition(obj, camera) {
-            const vector = new THREE.Vector3();
-            const canvas = renderer.domElement; 
-
-            obj.getWorldPosition(vector); 
-            vector.project(camera); 
-
-            const x = (vector.x * .5 + .5) * canvas.clientWidth;
-            const y = (vector.y * -.5 + .5) * canvas.clientHeight;
-            return { x, y };
-        }
-
-
-        window.addEventListener('resize', () => {
-            if (camera && renderer) {
-                const canvas = renderer.domElement;
-                canvas.style.width = '100%'; 
-                canvas.style.height = '75vh'; 
-                
-                const newWidth = canvas.clientWidth;
-                const newHeight = canvas.clientHeight;
-
-                camera.aspect = newWidth / newHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(newWidth, newHeight);
+            if (!isExpanded && window.innerWidth < 768) { 
+                document.body.classList.add('overflow-hidden');
+            } else { 
+                document.body.classList.remove('overflow-hidden');
             }
         });
 
-
-        // --- Star Creation ---
-        function createStars(numberOfStars) {
-            starsContainer.innerHTML = ''; 
-            for (let i = 0; i < numberOfStars; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                const sizeClasses = ['star-xs', 'star-sm', 'star-md', 'star-lg', 'star-xl'];
-                const sizeClass = sizeClasses[Math.floor(Math.random() * sizeClasses.length)];
-                star.classList.add(sizeClass);
-                
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.left = `${Math.random() * 100}%`;
-                
-                const minOpacity = Math.random() * 0.3 + 0.1; 
-                const maxOpacity = Math.random() * 0.4 + 0.6; 
-                star.style.setProperty('--star-opacity-min', minOpacity.toFixed(2));
-                star.style.setProperty('--star-opacity-max', maxOpacity.toFixed(2));
-
-                const duration = Math.random() * 4 + 2; 
-                const delay = Math.random() * 6;     
-                star.style.animationDuration = `${duration}s`;
-                star.style.animationDelay = `${delay}s`;
-                starsContainer.appendChild(star);
-            }
-        }
-        
-        // --- Shooting Star Creation ---
-        let shootingStarInterval;
-        function startShootingStars() {
-            if (shootingStarInterval) clearInterval(shootingStarInterval); 
-            shootingStarInterval = setInterval(() => {
-                if (body.classList.contains('dark')) { 
-                    createShootingStar();
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (mobileMenu.classList.contains('visible')) {
+                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                    
+                    mobileMenu.classList.add('opacity-0', 'invisible', '-translate-y-6', 'pointer-events-none');
+                    mobileMenu.classList.remove('opacity-100', 'visible', 'translate-y-0', 'pointer-events-auto');
+                    
+                    mobileMenuButton.querySelectorAll('svg')[0].classList.remove('hidden'); 
+                    mobileMenuButton.querySelectorAll('svg')[1].classList.add('hidden');    
+                    
+                    document.body.classList.remove('overflow-hidden');
                 }
-            }, Math.random() * 10000 + 5000); 
-        }
-
-        function stopShootingStars() {
-            clearInterval(shootingStarInterval);
-        }
-
-        function createShootingStar() {
-            const star = document.createElement('div');
-            star.classList.add('shooting-star');
-
-            const startX = Math.random() * window.innerWidth;
-            const startY = -100; 
-            const angle = Math.random() * 40 + 20; 
-            const endXOffset = (Math.random() * 400 + 200) * (Math.random() < 0.5 ? 1 : -1); 
-            const duration = Math.random() * 2 + 1.5; 
-
-            star.style.setProperty('--start-x', `${startX}px`);
-            star.style.setProperty('--start-y', `${startY}px`);
-            star.style.setProperty('--angle', `${angle}deg`);
-            star.style.setProperty('--end-x-offset', `${endXOffset}px`);
-            star.style.animationDuration = `${duration}s`;
-            
-            shootingStarsContainer.appendChild(star);
-
-            setTimeout(() => {
-                star.remove();
-            }, duration * 1000 + 100); 
-        }
-
-
-        // --- Cloud Creation ---
-        function createClouds(numberOfClouds) {
-            cloudsContainer.innerHTML = ''; 
-            for (let i = 0; i < numberOfClouds; i++) {
-                const cloudParent = document.createElement('div');
-                cloudParent.classList.add('cloud-parent');
-                const baseCloudSize = Math.random() * 100 + 80; 
-                const puffsConfig = [
-                    { w: 1, h: 0.7, t: 0.1, l: 0.25, br: '60% 40% 30% 70% / 50% 60% 40% 50%' },
-                    { w: 0.7, h: 0.6, t: 0, l: 0, br: '50% 70% 40% 60% / 60% 50% 70% 40%' },   
-                    { w: 0.8, h: 0.65, t: 0.05, l: 0.6, br: '40% 60% 50% 50% / 50% 40% 60% 50%' }, 
-                    { w: 0.6, h: 0.5, t: -0.15, l: 0.35, br: '70% 30% 60% 40% / 50% 70% 30% 50%'}
-                ];
-                let totalWidth = 0;
-                let totalHeight = 0;
-                puffsConfig.forEach(config => {
-                    const puff = document.createElement('div');
-                    puff.classList.add('cloud-puff');
-                    const puffWidth = baseCloudSize * config.w;
-                    const puffHeight = baseCloudSize * config.h;
-                    puff.style.width = `${puffWidth}px`;
-                    puff.style.height = `${puffHeight}px`;
-                    puff.style.top = `${baseCloudSize * config.t}px`;
-                    puff.style.left = `${baseCloudSize * config.l}px`;
-                    if (config.br) puff.style.borderRadius = config.br;
-                    cloudParent.appendChild(puff);
-                    totalWidth = Math.max(totalWidth, (baseCloudSize * config.l) + puffWidth);
-                    totalHeight = Math.max(totalHeight, (baseCloudSize * config.t) + puffHeight);
-                });
-                cloudParent.style.width = `${totalWidth}px`;
-                cloudParent.style.height = `${totalHeight}px`;
-                cloudParent.style.setProperty('--cloud-y', `${Math.random() * 50}%`); 
-                cloudParent.style.top = `var(--cloud-y)`;
-                const duration = Math.random() * 90 + 50; 
-                cloudParent.style.animationDuration = `${duration}s`;
-                cloudParent.style.animationDelay = `-${Math.random() * duration}s`; 
-                cloudParent.style.setProperty('--cloud-opacity', (Math.random() * 0.3 + 0.65).toFixed(2)); 
-                cloudsContainer.appendChild(cloudParent);
-            }
-        }
-
-        // --- Theme Management ---
-        function setTheme(theme, isInitialLoad = false) {
-            body.classList.remove('light', 'dark');
-            body.classList.add(theme);
-            if (!isInitialLoad) { 
-                localStorage.setItem('theme', theme);
-            }
-
-            if (!sun3D || !moon3D) return; 
-
-            if (theme === 'dark') {
-                // Sun sets
-                sunTargetY = celestialExitY;
-                sun3D.visible = true; // Keep visible to animate out
-                sunGlow.classList.remove('active-glow');
-
-                // Moon rises
-                moon3D.position.y = celestialEnterY; // Start from top
-                moon3D.visible = true;               // Make visible
-                moonTargetY = celestialRiseY;        // Animate to rise position
-                moonGlow.classList.add('active-glow');
-                
-                sunLight.intensity = 0.2; 
-                moodLight.style.opacity = '1';
-                toggleMoonIcon.classList.add('hidden');
-                toggleSunIcon.classList.remove('hidden');
-                
-                if(isInitialLoad) {
-                    pageTitle.textContent = "Sudeep Angamgari";
-                    pageSubtitle.textContent = "Data Engineer | Crafting intelligent data solutions.";
-                } else {
-                    pageTitle.textContent = "Sudeep Angamgari"; 
-         
-                }
-
-                if (!isInitialLoad) {
-                    const currentClouds = cloudsContainer.querySelectorAll('.cloud-parent');
-                    currentClouds.forEach(cloud => cloud.classList.add('cloud-exit-active'));
-                    cloudsContainer.classList.remove('active');
-                    setTimeout(() => {
-                        cloudsContainer.innerHTML = ''; 
-                        if (!starsContainer.classList.contains('active')) {
-                            createStars(200); 
-                            starsContainer.classList.add('active');
-                            starsContainer.classList.add('drifting'); 
-                        }
-                    }, CLOUD_EXIT_DURATION);
-                } else { 
-                     starsContainer.classList.add('active');
-                     starsContainer.classList.add('drifting');
-                     createStars(200);
-                     cloudsContainer.innerHTML = ''; 
-                     cloudsContainer.classList.remove('active');
-                }
-                startShootingStars();
-
-
-            } else { // Light theme
-                // Moon sets
-                moonTargetY = celestialExitY;
-                moon3D.visible = true; // Keep visible to animate out
-                moonGlow.classList.remove('active-glow');
-
-                // Sun rises
-                sun3D.position.y = celestialEnterY; // Start from top
-                sun3D.visible = true;               // Make visible
-                sunTargetY = celestialRiseY;        // Animate to rise position
-                sunGlow.classList.add('active-glow');
-                
-                sunLight.intensity = 1.5; 
-                moodLight.style.opacity = '0';
-                toggleSunIcon.classList.add('hidden');
-                toggleMoonIcon.classList.remove('hidden');
-                
-                 if(isInitialLoad) {
-                    pageTitle.textContent = "Sudeep Angamgari";
-                     pageSubtitle.textContent = "Data Engineer | Crafting intelligent data solutions.";
-                } else {
-                    pageTitle.textContent = "Sudeep Angamgari"; 
-                    // pageSubtitle.textContent = "The sky is clear, with gentle clouds.";
-                }
-
-                if (!isInitialLoad) {
-                    const currentStars = starsContainer.querySelectorAll('.star');
-                    currentStars.forEach(star => star.classList.add('star-exit-active'));
-                    starsContainer.classList.remove('drifting'); 
-                    setTimeout(() => {
-                        starsContainer.classList.remove('active'); 
-                        starsContainer.innerHTML = ''; 
-                        if (!cloudsContainer.classList.contains('active')) {
-                             createClouds(8);
-                             cloudsContainer.classList.add('active');
-                        }
-                    }, STAR_EXIT_DURATION);
-                } else { 
-                    cloudsContainer.classList.add('active');
-                    createClouds(8);
-                    starsContainer.innerHTML = ''; 
-                    starsContainer.classList.remove('active');
-                    starsContainer.classList.remove('drifting');
-                }
-                stopShootingStars();
-            }
-        }
-
-        // Event listener for the toggle button
-        themeToggleButton.addEventListener('click', () => {
-            if (body.classList.contains('light')) {
-                setTheme('dark');
-            } else {
-                setTheme('light');
-            }
-        });
-        
-        // --- Graphical Cursor Logic ---
-        const interactiveElements = document.querySelectorAll('.interactive-element, .theme-toggle, .contact-link, .tech-tag'); 
-
-        document.addEventListener('mousemove', (e) => {
-            if (graphicalCursor) {
-                graphicalCursor.style.left = e.clientX + 'px';
-                graphicalCursor.style.top = e.clientY + 'px';
-            }
-            if (cursorFollower) { 
-                cursorFollower.style.left = e.clientX + 'px';
-                cursorFollower.style.top = e.clientY + 'px';
-            }
-        });
-
-        interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                graphicalCursor.classList.add('hover-active');
-                cursorFollower.classList.add('hover-active');
-            });
-            el.addEventListener('mouseleave', () => {
-                graphicalCursor.classList.remove('hover-active');
-                cursorFollower.classList.remove('hover-active');
             });
         });
 
-        // --- Scroll Animation Logic ---
-        const scrollSections = document.querySelectorAll('.scroll-animate');
-        const observerOptions = {
-            root: null, 
-            rootMargin: '0px',
-            threshold: 0.2 
-        };
+        // Typed.js initialization
+        if (document.getElementById('typed-tagline')) {
+            new Typed('#typed-tagline', {
+                strings: ['Data Engineer.', 'Cloud Architect.', 'AWS Specialist.', 'Problem Solver.', 'Building Scalable Solutions.'],
+                typeSpeed: 60,
+                backSpeed: 30,
+                backDelay: 1500,
+                loop: true,
+                smartBackspace: true,
+                cursorChar: '_', 
+            });
+        }
 
-        const observer = new IntersectionObserver((entries, observer) => {
+        // particles.js configuration
+        if (document.getElementById('particles-js')) {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": { "value": 50, "density": { "enable": true, "value_area": 1000 } },
+                    "color": { "value": "#444444" }, 
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.3, "random": true, "anim": { "enable": true, "speed": 0.2, "opacity_min": 0.05, "sync": false } },
+                    "size": { "value": 2, "random": true, "anim": { "enable": false } },
+                    "line_linked": { "enable": true, "distance": 160, "color": "#222222", "opacity": 0.15, "width": 1 }, 
+                    "move": { "enable": true, "speed": 0.5, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": false }, "resize": true },
+                    "modes": { "grab": { "distance": 100, "line_linked": { "opacity": 0.3 } } }
+                },
+                "retina_detect": true
+            });
+        }
+
+        // Scroll animations
+        const scrollElements = document.querySelectorAll('.scroll-animate');
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target); 
-                }
+                } 
             });
-        }, observerOptions);
+        }, { threshold: 0.1 }); 
 
-        scrollSections.forEach(section => {
-            observer.observe(section);
+        scrollElements.forEach(el => {
+            observer.observe(el);
         });
 
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        // --- Initial Setup ---
-        document.addEventListener('DOMContentLoaded', () => {
-            celestialCanvas.width = celestialCanvas.clientWidth;
-            celestialCanvas.height = celestialCanvas.clientHeight;
-            
-            initThreeJS(); 
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            
-            setTheme(savedTheme, true); 
+        // Smooth scroll
+        document.querySelectorAll('nav a[href^="#"], #mobile-menu a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const navbarHeight = document.querySelector('nav').offsetHeight;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
         });
     </script>
 </body>
