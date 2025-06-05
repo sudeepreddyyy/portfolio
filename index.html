@@ -137,18 +137,7 @@
             color: #191919;
             border-color: #C0C0C0;
         }
-        .btn-gemini {
-            background-color: #F0F0F0;
-            color: #3B82F6; /* Blue text for Gemini buttons */
-            border: 1px solid #D1D1D1;
-            font-size: 0.8rem;
-            padding: 0.35rem 0.75rem;
-            margin-top: 0.75rem;
-        }
-        .btn-gemini:hover {
-            background-color: #E6E6E6;
-            border-color: #C0C0C0;
-        }
+        /* Removed .btn-gemini class */
 
         h1, h2, h3, h4, h5, h6 {
             color: #191919;
@@ -208,21 +197,7 @@
             background-color: #F0F0F0;
             color: #191919;
         }
-        .gemini-explanation {
-            margin-top: 1rem;
-            padding: 0.75rem;
-            background-color: #F9F9F9;
-            border-left: 3px solid #2E6FD0;
-            font-size: 0.875rem;
-            color: #333333;
-            border-radius: 3px;
-        }
-        .loading-message {
-            font-style: italic;
-            color: #787878;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-        }
+        /* Removed .gemini-explanation and .loading-message classes */
 
     </style>
 </head>
@@ -279,11 +254,12 @@
             </h1>
             <p id="typed-tagline" class="text-lg md:text-xl text-gray-600 mb-10"></p>
             <div class="relative mt-2 space-x-3 sm:space-x-4">
-                <a href="https://linkedin.com/in/sudeepangamgari" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                <a href="https://linkedin.com/in/sudeepangamgari/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
                     LinkedIn
                 </a>
-                <a href="https://github.com/sudeepreddyyy" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-                    GitHub
+                <a href="https://github.com/sudeepreddyyy" target="_blank" rel="noopener noreferrer" class="btn btn-secondary"> 
+                    <!-- Assuming GitHub username remains the same, if different, update here -->
+                    GitHub 
                 </a>
                  <a href="#contact" class="btn btn-primary">
                     Contact Me
@@ -306,34 +282,36 @@
             <div class="space-y-6"> 
                 <div class="card scroll-animate" style="transition-delay: 0.1s;">
                     <h3 class="experience-title">Data Analytical Engineer</h3>
-                    <p class="company-date-text">Purdue University | Jan 2024 - Dec 2024</p>
+                    <p class="company-date-text">Purdue University, United States | Jan. 2024 - Present</p>
                     <ul>
-                        <li>Architected AWS-based scalable data pipelines (Python, S3, Lambda) for 100K+ daily sales records, improving processing speed by 30%.</li>
-                        <li>Developed real-time inventory tracking solutions (AWS S3, Lambda, SNS), decreasing stock-out incidents by 25%.</li>
-                        <li>Deployed event-driven anomaly detection systems (AWS Lambda, SQS, SNS), reducing incident response time by 60%.</li>
-                        <li>Created interactive Power BI dashboards, enhancing sales and inventory decision-making efficiency by 40%.</li>
-                        <li>Enforced data security and compliance through robust IAM policies and access controls.</li>
+                        <li>Built cloud-native ETL pipelines using Python, AWS S3, Lambda, Postgres, Glue and DynamoDB to automate the ingestion of student records, with a strong focus on scalability, reliability, and data integrity.</li>
+                        <li>Built a Python-based analytics system with a modular design, allowing different parts of the university to securely share and access data through both GraphQL and REST APIs.</li>
+                        <li>Implemented real-time anomaly detection using AWS Lambda and SNS, significantly improving responsiveness and reducing incident detection time by over half.</li>
+                        <li>Collaborated closely with academic departments, IT teams, and administrative units to define requirements, validate data flows, and ensure analytics solutions aligned with institutional goals.</li>
                     </ul>
                 </div>
                 <div class="card scroll-animate" style="transition-delay: 0.2s;">
                     <h3 class="experience-title">Data Engineer</h3>
-                    <p class="company-date-text">JLP Partnership | Mar 2021 - Dec 2022</p>
+                    <p class="company-date-text">JLP Partnership, India | Mar. 2021 - Dec. 2022</p>
                     <ul>
-                        <li>Designed and implemented highly available real-time data pipelines (AWS Kinesis, Lambda, Redshift, S3) processing over 2M daily sales transactions with 99% uptime, reducing data ingestion lag by 40%.</li>
-                        <li>Streamlined critical PySpark batch jobs and refactored complex PostgreSQL queries, achieving a 35% reduction in average compute time.</li>
-                        <li>Automated real-time sales data analysis using AWS Lambda and Pandas, boosting data processing efficiency by 40%.</li>
-                        <li>Built a Flask-based CRUD API for streamlined data access, improving data retrieval speed for downstream applications by 30%.</li>
-                        <li>Pioneered interactive Power BI dashboards for sales trends and inventory levels, cutting weekly reporting time by approximately 6 hours.</li>
+                        <li>Designed and deployed scalable ETL pipelines using AWS Kinesis, Lambda, Redshift, S3, and DynamoDB to process millions of daily sales records, enabling timely insights into store and product performance.</li>
+                        <li>Integrated Apache Kafka for reliable ingestion of user activity logs, enabling scalable batch processing across distributed data pipelines.</li>
+                        <li>Developed and containerized secure, high-performance Flask-based REST APIs to expose backend inventory data, implementing JWT authentication and rate limiting.</li>
+                        <li>Built Power BI dashboards using DAX for dynamic visualization across operations and marketing; wrote complex SQL queries to automate manual reporting workflows.</li>
+                        <li>Implemented AWS CloudWatch and SNS/SQS for real-time monitoring and asynchronous messaging across microservices.</li>
+                        <li>Applied regression-based ML models to forecast short-term product demand using historical sales data; results fed into dashboards, improving marketing campaign planning accuracy.</li>
+                        <li>Followed agile and test-driven development (TDD) principles, integrating CI/CD pipelines to maintain deployment efficiency and reliability.</li>
                     </ul>
                 </div>
                 <div class="card scroll-animate" style="transition-delay: 0.3s;">
-                    <h3 class="experience-title">Junior Data Engineer</h3>
-                    <p class="company-date-text">BIS Pvt Ltd | Jun 2020 - Feb 2021</p>
+                    <h3 class="experience-title">Data Analyst</h3> <!-- Title changed -->
+                    <p class="company-date-text">BIS Pvt Ltd, India | Jun. 2020 - Feb. 2021</p>
                     <ul>
-                        <li>Constructed and optimized end-to-end ETL pipelines using Python and SQL for digital advertising performance data, increasing pipeline throughput by 30%.</li>
-                        <li>Designed and developed dynamic Power BI dashboards to track key ad metrics (spend, CTR, engagement), reducing manual reporting time by 40%.</li>
-                        <li>Enhanced and maintained Snowflake-based data warehouses, resulting in a 30% gain in query responsiveness for analytical teams.</li>
-                        <li>Contributed to the successful migration of 5TB of on-premise data to AWS (S3 & Redshift), lowering query latency by 25% and reducing cloud operational costs by 15%.</li>
+                        <li>Developed ETL pipelines with Python and SQL to process advertising data, ensuring data quality through validation checks.</li>
+                        <li>Optimized Snowflake data warehouse schemas and implemented appropriate data modeling techniques.</li>
+                        <li>Assisted in migrating on-premise databases to cloud infrastructure (AWS S3/Redshift), improving data accessibility.</li>
+                        <li>Created interactive dashboards using Tableau to visualize ad performance metrics such as spend, CTR, and user engagement, enabling faster decision-making for marketing teams.</li>
+                        <li>Collaborated with analysts to understand data requirements and implement appropriate data transformation processes.</li>
                     </ul>
                 </div>
             </div>
@@ -343,40 +321,36 @@
             <h2 class="section-title scroll-animate">My Projects</h2>
             <div class="grid md:grid-cols-2 gap-6"> 
                 <div class="card scroll-animate project-card" style="transition-delay: 0.1s;" data-project-id="project1">
-                    <h3 class="project-title">Real-Time Stock Market Data Pipeline</h3>
-                    <p class="project-description text-sm text-gray-600 mb-3">Engineered a robust ETL pipeline using Apache Kafka, AWS Glue, S3, and Redshift to process 500K+ daily stock market transactions, reducing data latency by 30% and query execution time by 25%.</p>
+                    <h3 class="project-title">Real-Time Stock Market Data Pipeline using Kafka and AWS</h3>
+                    <p class="project-description text-sm text-gray-600 mb-3">Constructed a real-time stock data pipeline processing 500K+ daily transactions, reducing data latency by 30% and query execution time by 25% through efficient ETL workflows.</p>
                     <div class="flex flex-wrap project-tags">
-                        <span class="tag">Apache Kafka</span><span class="tag">AWS Glue</span><span class="tag">AWS Redshift</span><span class="tag">AWS S3</span><span class="tag">Python</span><span class="tag">ETL</span>
+                        <span class="tag">Apache Kafka</span><span class="tag">AWS (Glue, Redshift, S3)</span><span class="tag">Python</span>
                     </div>
-                    <button class="btn btn-gemini explain-project-btn">✨ Explain This Project</button>
-                    <div class="gemini-explanation-container mt-2 hidden"></div>
+                    <!-- Removed Gemini Button and explanation container -->
                 </div>
                 <div class="card scroll-animate project-card" style="transition-delay: 0.15s;" data-project-id="project2">
-                    <h3 class="project-title">Voice-Controlled UAV System for Precision Agriculture</h3>
-                    <p class="project-description text-sm text-gray-600 mb-3">Developed an AI-driven UAV system integrating GPT-4 for natural language command processing and YOLOv8 for real-time crop health detection. Achieved a 50% reduction in command latency and improved crop monitoring accuracy using AirSim simulation.</p>
+                    <h3 class="project-title">Voice-Controlled UAV System (AirSim, ChatGPT, YOLOv8)</h3>
+                    <p class="project-description text-sm text-gray-600 mb-3">Engineered an autonomous UAV system leveraging prompt-engineered LLMs for NLP and Image Processing (YOLOv8) for real-time crop detection, achieving a 50% reduction in NLP-to-actuation latency and validating system efficacy in simulated precision agriculture scenarios.</p>
                     <div class="flex flex-wrap project-tags">
-                        <span class="tag">Python</span><span class="tag">LLM (GPT-4)</span><span class="tag">YOLOv8</span><span class="tag">Computer Vision</span><span class="tag">AirSim</span><span class="tag">AI</span>
+                        <span class="tag">Python</span><span class="tag">LLM</span><span class="tag">YOLOv8</span><span class="tag">AirSim</span>
                     </div>
-                    <button class="btn btn-gemini explain-project-btn">✨ Explain This Project</button>
-                    <div class="gemini-explanation-container mt-2 hidden"></div>
+                    <!-- Removed Gemini Button and explanation container -->
                 </div>
                 <div class="card scroll-animate project-card" style="transition-delay: 0.2s;" data-project-id="project3"> 
-                    <h3 class="project-title">Conversational Recommendation System with Knowledge Graphs</h3>
-                    <p class="project-description text-sm text-gray-600 mb-3">Designed a personalized recommendation engine featuring an LLM-powered chatbot (React, OpenAI API) and a Neo4j graph database to model user preferences, delivering highly context-aware suggestions.</p>
+                    <h3 class="project-title">NLP-Powered Book Recommendation System</h3>
+                    <p class="project-description text-sm text-gray-600 mb-3">Designed a personalized recommendation engine using an LLM-powered chatbot and Neo4j to model user preferences and relationship patterns for context-aware suggestions.</p>
                     <div class="flex flex-wrap project-tags">
-                        <span class="tag">React</span><span class="tag">Python</span><span class="tag">OpenAI API</span><span class="tag">Neo4j</span><span class="tag">LLM</span><span class="tag">Recommendation Engine</span>
+                        <span class="tag">Streamlit</span><span class="tag">Python</span><span class="tag">Llama API</span><span class="tag">Neo4j</span>
                     </div>
-                    <button class="btn btn-gemini explain-project-btn">✨ Explain This Project</button>
-                    <div class="gemini-explanation-container mt-2 hidden"></div>
+                    <!-- Removed Gemini Button and explanation container -->
                 </div>
                 <div class="card scroll-animate project-card" style="transition-delay: 0.25s;" data-project-id="project4">
-                    <h3 class="project-title">ETL Pipeline Optimization for Big Data in Healthcare</h3>
-                    <p class="project-description text-sm text-gray-600 mb-3">Built and optimized an ETL pipeline for large-scale healthcare datasets using Apache Airflow for orchestration and AWS Glue for serverless processing, improving data processing speed by 30% and ensuring data integrity.</p>
+                    <h3 class="project-title">RAG-Based QA System to Enable Natural Language Search</h3>
+                    <p class="project-description text-sm text-gray-600 mb-3">Developed a Retrieval-Augmented Generation (RAG) system using FAISS, OpenAI, and AWS, enabling natural language queries over internal documents with 88% answer accuracy.</p>
                     <div class="flex flex-wrap project-tags">
-                        <span class="tag">Apache Airflow</span><span class="tag">AWS Glue</span><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Big Data</span><span class="tag">Healthcare</span>
+                        <span class="tag">Python</span><span class="tag">OpenAI API</span><span class="tag">FAISS</span><span class="tag">LangChain</span><span class="tag">AWS</span><span class="tag">Postgres</span>
                     </div>
-                    <button class="btn btn-gemini explain-project-btn">✨ Explain This Project</button>
-                    <div class="gemini-explanation-container mt-2 hidden"></div>
+                    <!-- Removed Gemini Button and explanation container -->
                 </div>
             </div>
         </section>
@@ -384,41 +358,35 @@
         <section id="skills" class="mb-16">
             <h2 class="section-title scroll-animate">Technical Skills</h2>
             <div class="space-y-4">
-                <div class="scroll-animate skill-block" style="transition-delay: 0.1s;" data-skill-id="skill1">
-                    <h4 class="skill-title">Cloud Platforms</h4>
-                    <p class="skill-description text-gray-700 text-sm">AWS (S3, Redshift, Glue, Kinesis, Lambda, SNS, SQS, CloudWatch, IAM, EC2, EMR, RDS)</p>
-                    <button class="btn btn-gemini explain-skill-btn">✨ Learn More About These Skills</button>
-                    <div class="gemini-explanation-container mt-2 hidden"></div>
+                <div class="scroll-animate skill-block" style="transition-delay: 0.1s;">
+                    <h4 class="skill-title">Cloud & Big Data</h4>
+                    <p class="skill-description text-gray-700 text-sm">AWS, Snowflake, DynamoDB, Apache Kafka, Spark (PySpark)</p>
+                    <!-- Removed Gemini Button and explanation container -->
                 </div>
-                 <div class="scroll-animate skill-block" style="transition-delay: 0.15s;" data-skill-id="skill2">
-                    <h4 class="skill-title">Big Data Technologies</h4>
-                    <p class="skill-description text-gray-700 text-sm">Apache Kafka, Spark (PySpark), Hadoop, Hive</p>
-                    <button class="btn btn-gemini explain-skill-btn">✨ Learn More About These Skills</button>
-                    <div class="gemini-explanation-container mt-2 hidden"></div>
+                 <div class="scroll-animate skill-block" style="transition-delay: 0.15s;">
+                    <h4 class="skill-title">ETL</h4>
+                    <p class="skill-description text-gray-700 text-sm">Python (Pandas, Flask), SQL (PostgreSQL, MySQL), NOSQL (DynamoDB, MongoDB), Neo4j, Apache Airflow, GraphQL, REST</p>
+                    <!-- Removed Gemini Button and explanation container -->
                 </div>
-                <div class="scroll-animate skill-block" style="transition-delay: 0.2s;" data-skill-id="skill3">
-                    <h4 class="skill-title">ETL & Data Processing</h4>
-                    <p class="skill-description text-gray-700 text-sm">Python (Pandas, NumPy, SciPy, Flask), SQL (PostgreSQL, MySQL, NoSQL), Apache Airflow, dbt</p>
-                    <button class="btn btn-gemini explain-skill-btn">✨ Learn More About These Skills</button>
-                    <div class="gemini-explanation-container mt-2 hidden"></div>
+                <div class="scroll-animate skill-block" style="transition-delay: 0.2s;">
+                    <h4 class="skill-title">Visualization</h4>
+                    <p class="skill-description text-gray-700 text-sm">Power BI, Tableau, Streamlit, HTML, CSS, JavaScript</p>
+                    <!-- Removed Gemini Button and explanation container -->
                 </div>
-                <div class="scroll-animate skill-block" style="transition-delay: 0.25s;" data-skill-id="skill4">
-                    <h4 class="skill-title">Data Visualization</h4>
-                    <p class="skill-description text-gray-700 text-sm">Power BI, Tableau, Matplotlib, Seaborn, Excel (Pivot tables, VLOOKUP)</p>
-                    <button class="btn btn-gemini explain-skill-btn">✨ Learn More About These Skills</button>
-                    <div class="gemini-explanation-container mt-2 hidden"></div>
+                <div class="scroll-animate skill-block" style="transition-delay: 0.25s;">
+                    <h4 class="skill-title">DevOps</h4>
+                    <p class="skill-description text-gray-700 text-sm">Git, GitHub, Docker, CI/CD</p> <!-- Assuming $Cl/CD$ meant CI/CD -->
+                    <!-- Removed Gemini Button and explanation container -->
                 </div>
-                <div class="scroll-animate skill-block" style="transition-delay: 0.3s;" data-skill-id="skill5">
-                    <h4 class="skill-title">DevOps & Tools</h4>
-                    <p class="skill-description text-gray-700 text-sm">Git, GitHub, Docker, CI/CD (Jenkins/GitLab CI), Jupyter Notebooks, VSCode, JIRA, Confluence</p>
-                    <button class="btn btn-gemini explain-skill-btn">✨ Learn More About These Skills</button>
-                    <div class="gemini-explanation-container mt-2 hidden"></div>
+                <div class="scroll-animate skill-block" style="transition-delay: 0.3s;">
+                    <h4 class="skill-title">Tools</h4>
+                    <p class="skill-description text-gray-700 text-sm">Jupyter, VSCode, JIRA</p>
+                    <!-- Removed Gemini Button and explanation container -->
                 </div>
-                <div class="scroll-animate skill-block" style="transition-delay: 0.35s;" data-skill-id="skill6">
-                    <h4 class="skill-title">Machine Learning / AI</h4>
-                    <p class="skill-description text-gray-700 text-sm">Regression, Classification (XGBoost, LDA), Clustering, NLP (NLTK, spaCy), Computer Vision (YOLOv8), LLMs (OpenAI API), Scikit-learn, TensorFlow, Keras</p>
-                    <button class="btn btn-gemini explain-skill-btn">✨ Learn More About These Skills</button>
-                    <div class="gemini-explanation-container mt-2 hidden"></div>
+                <div class="scroll-animate skill-block" style="transition-delay: 0.35s;">
+                    <h4 class="skill-title">ML/AI</h4>
+                    <p class="skill-description text-gray-700 text-sm">LLMS, NLP, YOLOv8, XGBoost, LDA, Prompt Engineering, Tensorflow</p>
+                    <!-- Removed Gemini Button and explanation container -->
                 </div>
             </div>
         </section>
@@ -427,7 +395,11 @@
             <h2 class="section-title">Education</h2>
             <div class="card"> 
                 <h3 class="education-title">Master of Science in Computer Information Technology</h3>
-                <p class="company-date-text">Purdue University | Jan 2023 - Dec 2024</p>
+                <p class="company-date-text">Purdue University | Jan. 2023 - Dec. 2024</p>
+            </div>
+            <div class="card mt-4"> <!-- Added a new card for Bachelors -->
+                <h3 class="education-title">Bachelors of Technology in Information Technology</h3>
+                <p class="company-date-text">JNTUH | Aug. 2016 - May 2020</p>
             </div>
         </section>
 
@@ -445,13 +417,14 @@
                 </a>
             </div>
             <p class="text-gray-700 text-sm mb-1">sudeepangamgari@gmail.com</p>
-            <p class="text-gray-700 text-sm mb-8">+1 (840) 234 4965</p>
+            <p class="text-gray-700 text-sm mb-8">(840) 234-4965</p> <!-- Updated phone format -->
             
              <div class="flex space-x-6">
-                <a href="https://linkedin.com/in/sudeepangamgari" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-800 transition-colors duration-300">
+                <a href="https://linkedin.com/in/sudeepangamgari/" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-800 transition-colors duration-300">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/></svg>
                 </a>
                 <a href="https://github.com/sudeepreddyyy" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-800 transition-colors duration-300">
+                    <!-- Assuming GitHub username remains sudeepreddyyy -->
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.565 21.799 24 17.301 24 12c0-6.627-5.373-12-12-12z" clip-rule="evenodd"/></svg>
                 </a>
             </div>
@@ -460,92 +433,13 @@
 
     <footer class="text-center py-12 text-gray-500 text-xs border-t border-gray-200">
         <p>&copy; <span id="currentYear"></span> Sudeep Angamgari. All Rights Reserved.</p>
-        <p class="mt-1">Inspired by Notion's Simplicity. Enhanced with Gemini AI ✨</p>
+        <p class="mt-1">Inspired by Notion's Simplicity.</p> <!-- Removed Gemini mention -->
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 
     <script>
-        // --- Gemini API Call Function ---
-        async function getGeminiExplanation(promptText, buttonElement) {
-            const explanationContainer = buttonElement.nextElementSibling;
-            explanationContainer.classList.remove('hidden');
-            explanationContainer.innerHTML = '<p class="loading-message">✨ Thinking...</p>';
-            buttonElement.disabled = true;
-
-            let chatHistory = [{ role: "user", parts: [{ text: promptText }] }];
-            const payload = { contents: chatHistory };
-            const apiKey = ""; 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Gemini API Error:', errorData);
-                    explanationContainer.innerHTML = `<p class="text-red-500 text-sm">Sorry, I couldn't fetch an explanation right now. Error: ${response.status}</p>`;
-                    buttonElement.disabled = false;
-                    return;
-                }
-
-                const result = await response.json();
-                
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const text = result.candidates[0].content.parts[0].text;
-                    let htmlText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); 
-                    htmlText = htmlText.replace(/^\* (.*$)/gm, '<li>$1</li>'); 
-                    htmlText = htmlText.replace(/(\r\n|\r|\n){2,}/g, '<br><br>'); 
-                    htmlText = htmlText.replace(/(\r\n|\r|\n)/g, '<br>'); 
-                    if (htmlText.includes('<li>')) {
-                        htmlText = '<ul>' + htmlText + '</ul>';
-                    }
-                    explanationContainer.innerHTML = `<div class="gemini-explanation">${htmlText}</div>`;
-                } else {
-                    explanationContainer.innerHTML = '<p class="text-orange-500 text-sm">Received an empty or unexpected response from the AI.</p>';
-                }
-            } catch (error) {
-                console.error('Error calling Gemini API:', error);
-                explanationContainer.innerHTML = `<p class="text-red-500 text-sm">An error occurred: ${error.message}</p>`;
-            } finally {
-                buttonElement.disabled = false;
-            }
-        }
-
-        document.querySelectorAll('.explain-project-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const projectCard = button.closest('.project-card');
-                const title = projectCard.querySelector('.project-title').textContent;
-                const description = projectCard.querySelector('.project-description').textContent;
-                const tags = Array.from(projectCard.querySelectorAll('.project-tags .tag')).map(tag => tag.textContent).join(', ');
-                
-                const prompt = `You are a helpful assistant. Explain the following project in simple, engaging terms for a portfolio website. Highlight its key technologies and impact. Keep it concise (around 2-4 sentences).
-Project Title: "${title}"
-Description: "${description}"
-Technologies Used: ${tags}`;
-                getGeminiExplanation(prompt, button);
-            });
-        });
-
-        document.querySelectorAll('.explain-skill-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const skillBlock = button.closest('.skill-block');
-                const title = skillBlock.querySelector('.skill-title').textContent;
-                const skills = skillBlock.querySelector('.skill-description').textContent;
-                
-                const prompt = `You are a helpful assistant. Briefly explain the importance of the following skill category and its listed technologies in the field of data engineering for a portfolio website. Keep it concise and informative (around 2-4 sentences).
-Skill Category: "${title}"
-Skills/Technologies: "${skills}"`;
-                getGeminiExplanation(prompt, button);
-            });
-        });
-
+        // Removed Gemini API Call Function and related event listeners
 
         // Mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
