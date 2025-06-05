@@ -233,8 +233,7 @@
             <div class="flex items-center justify-between h-16"> 
                 <div class="flex items-center">
                     <a href="#hero" class="flex items-center">
-                        <!-- Removed rounded-full class for squared borders -->
-                        <img src="image_8ec891.jpg" alt="Sudeep Angamgari Logo" class="h-8 w-8 object-cover">
+                        <img src="notion image .png" alt="Sudeep Angamgari Logo" class="h-8 w-8 object-cover rounded-md">
                     </a>
                 </div>
                 <div class="hidden md:block">
@@ -476,7 +475,6 @@
 
             let chatHistory = [{ role: "user", parts: [{ text: promptText }] }];
             const payload = { contents: chatHistory };
-            // The API Key will be automatically provided by the Canvas environment when empty.
             const apiKey = ""; 
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
@@ -501,11 +499,10 @@
                     result.candidates[0].content && result.candidates[0].content.parts &&
                     result.candidates[0].content.parts.length > 0) {
                     const text = result.candidates[0].content.parts[0].text;
-                    // Simple Markdown to HTML conversion for bold and lists
-                    let htmlText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Bold
-                    htmlText = htmlText.replace(/^\* (.*$)/gm, '<li>$1</li>'); // List items
-                    htmlText = htmlText.replace(/(\r\n|\r|\n){2,}/g, '<br><br>'); // Paragraph breaks
-                    htmlText = htmlText.replace(/(\r\n|\r|\n)/g, '<br>'); // Single line breaks
+                    let htmlText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); 
+                    htmlText = htmlText.replace(/^\* (.*$)/gm, '<li>$1</li>'); 
+                    htmlText = htmlText.replace(/(\r\n|\r|\n){2,}/g, '<br><br>'); 
+                    htmlText = htmlText.replace(/(\r\n|\r|\n)/g, '<br>'); 
                     if (htmlText.includes('<li>')) {
                         htmlText = '<ul>' + htmlText + '</ul>';
                     }
@@ -521,7 +518,6 @@
             }
         }
 
-        // --- Event Listeners for Project Explain Buttons ---
         document.querySelectorAll('.explain-project-btn').forEach(button => {
             button.addEventListener('click', () => {
                 const projectCard = button.closest('.project-card');
@@ -537,7 +533,6 @@ Technologies Used: ${tags}`;
             });
         });
 
-        // --- Event Listeners for Skill Explain Buttons ---
         document.querySelectorAll('.explain-skill-btn').forEach(button => {
             button.addEventListener('click', () => {
                 const skillBlock = button.closest('.skill-block');
