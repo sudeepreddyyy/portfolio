@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sudeep Angamgari - Portfolio</title>
+    <!-- Favicon Link Added -->
+    <link rel="icon" type="image/png" href="notion image .png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -292,14 +294,14 @@
             align-self: flex-start;
             border-bottom-left-radius: 0;
         }
-         .bot-message strong { /* Make bold text stand out more */
+         .bot-message strong { 
             font-weight: 600;
             color: #191919;
         }
         .bot-message ul {
             margin-top: 0.5rem;
             margin-bottom: 0.25rem;
-            padding-left: 1rem; /* Indent lists within bot message */
+            padding-left: 1rem; 
         }
         .bot-message li {
             margin-bottom: 0.25rem;
@@ -599,7 +601,7 @@
 
     <footer class="text-center py-12 text-gray-500 text-xs border-t border-gray-200">
         <p>&copy; <span id="currentYear"></span> Sudeep Angamgari. All Rights Reserved.</p>
-        
+        <p class="mt-1">Inspired by Notion's Simplicity. Chat powered by OpenAI ✨</p> 
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
@@ -611,7 +613,6 @@
         function extractPortfolioContext() {
             const contentElement = document.getElementById('portfolio-content');
             if (contentElement) {
-                // Simple text extraction, could be refined to be more structured
                 let text = `Sudeep Angamgari's Portfolio:\n`;
                 const sections = contentElement.querySelectorAll('section');
                 sections.forEach(section => {
@@ -628,69 +629,77 @@
         }
 
 
-        // --- Gemini API Call Function for Chatbot ---
+        // --- OpenAI API Call Function for Chatbot ---
         async function getChatbotResponse(userQuestion) {
             const chatMessages = document.getElementById('chat-messages');
             
-            // Add user message to chat
             const userMessageDiv = document.createElement('div');
             userMessageDiv.classList.add('chat-message', 'user-message');
             userMessageDiv.textContent = userQuestion;
             chatMessages.appendChild(userMessageDiv);
 
-            // Show loading indicator (as a bot message)
             const loadingMessageDiv = document.createElement('div');
             loadingMessageDiv.classList.add('chat-message', 'bot-message');
             loadingMessageDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
             chatMessages.appendChild(loadingMessageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-
-            const promptText = `You are Sudeep Angamgari's AI Portfolio Assistant. Based *only* on the following portfolio context, answer the user's question concisely and professionally. If the information isn't in the context, say you don't have specific details on that topic from the portfolio. Do not make up information.
+            const systemMessage = `You are Sudeep Angamgari's AI Portfolio Assistant. Based *only* on the following portfolio context, answer the user's question concisely and professionally. If the information isn't in the context, say you don't have specific details on that topic from the portfolio. Do not make up information. Keep your answers brief and to the point.
 
 Context about Sudeep Angamgari:
 ---
 ${portfolioContext}
----
+---`;
 
-User's Question: "${userQuestion}"
+            // Using the provided OpenAI API Key
+            const apiKey = "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";
+            const apiUrl = `https://api.openai.com/v1/chat/completions`;
 
-Answer:`;
-
-            let chatHistory = [{ role: "user", parts: [{ text: promptText }] }];
-            const payload = { contents: chatHistory };
-            const apiKey = ""; // API key will be injected by the environment
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            const payload = {
+                model: "gpt-3.5-turbo", // Or another suitable model like "gpt-4" if your key supports it
+                messages: [
+                    { "role": "system", "content": systemMessage },
+                    { "role": "user", "content": userQuestion }
+                ],
+                temperature: 0.5, // Adjust for creativity vs. factuality
+                max_tokens: 150 // Limit response length
+            };
 
             try {
                 const response = await fetch(apiUrl, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                     },
                     body: JSON.stringify(payload)
                 });
                 
-                chatMessages.removeChild(loadingMessageDiv); // Remove loading indicator
+                chatMessages.removeChild(loadingMessageDiv); 
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    console.error('Gemini API Error:', errorData);
-                    appendBotMessage(`Sorry, I encountered an error: ${response.status}. Please try again.`);
+                    console.error('OpenAI API Error:', errorData);
+                    let errorMsg = `Sorry, I encountered an error: ${response.status}.`;
+                    if(errorData.error && errorData.error.message) {
+                        errorMsg += ` Details: ${errorData.error.message}`;
+                    }
+                    appendBotMessage(errorMsg);
                     return;
                 }
 
                 const result = await response.json();
                 
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const text = result.candidates[0].content.parts[0].text;
+                if (result.choices && result.choices.length > 0 && result.choices[0].message && result.choices[0].message.content) {
+                    const text = result.choices[0].message.content.trim();
                     appendBotMessage(text);
                 } else {
+                    console.error('OpenAI API - Unexpected response structure:', result);
                     appendBotMessage("I received an unexpected response. Please try rephrasing your question.");
                 }
             } catch (error) {
-                console.error('Error calling Gemini API:', error);
-                if (loadingMessageDiv.parentNode === chatMessages) { // Check if still there
+                console.error('Error calling OpenAI API:', error);
+                if (loadingMessageDiv.parentNode === chatMessages) { 
                      chatMessages.removeChild(loadingMessageDiv);
                 }
                 appendBotMessage(`An error occurred: ${error.message}. Please check the console for details.`);
@@ -702,22 +711,18 @@ Answer:`;
             const botMessageDiv = document.createElement('div');
             botMessageDiv.classList.add('chat-message', 'bot-message');
             
-            // Basic Markdown to HTML
             let htmlText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); 
             htmlText = htmlText.replace(/^\* (.*$)/gm, '<li>$1</li>'); 
-            // Ensure list items are wrapped in ul if any li are present
              if (htmlText.includes('<li>') && !htmlText.startsWith('<ul>')) {
-                htmlText = '<ul>' + htmlText.replace(/<\/li>(?![\s\S]*<\/li>)/, '</li></ul>'); // Add ul only if li exists and wrap properly
+                htmlText = '<ul>' + htmlText.replace(/<\/li>(?![\s\S]*<\/li>)/, '</li></ul>'); 
             }
-            htmlText = htmlText.replace(/\n/g, '<br>'); // Convert newlines to <br> for paragraph breaks
+            htmlText = htmlText.replace(/\n/g, '<br>'); 
 
             botMessageDiv.innerHTML = htmlText;
             chatMessages.appendChild(botMessageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
+            chatMessages.scrollTop = chatMessages.scrollHeight; 
         }
 
-
-        // --- Chatbot UI Logic ---
         const chatIcon = document.getElementById('chat-icon');
         const chatWindow = document.getElementById('chat-window');
         const closeChatBtn = document.getElementById('close-chat-btn');
@@ -726,9 +731,9 @@ Answer:`;
 
         chatIcon.addEventListener('click', () => {
             chatWindow.classList.toggle('open');
-            if (chatWindow.classList.contains('open') && !portfolioContext) { // Extract context if opening for first time
+            if (chatWindow.classList.contains('open') && !portfolioContext) { 
                 portfolioContext = extractPortfolioContext();
-                 console.log("Portfolio Context Extracted:", portfolioContext.substring(0, 500) + "..."); // Log first 500 chars for verification
+                 console.log("Portfolio Context Extracted (first 500 chars):", portfolioContext.substring(0, 500) + "...");
             }
         });
 
@@ -751,8 +756,6 @@ Answer:`;
             }
         });
 
-
-        // Mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileNavLinks = document.querySelectorAll('#mobile-menu a[href^="#"]'); 
@@ -797,7 +800,6 @@ Answer:`;
             });
         });
 
-        // Typed.js initialization
         if (document.getElementById('typed-tagline')) {
             new Typed('#typed-tagline', {
                 strings: ['Data Engineer', 'Cloud Architect', 'AWS Specialist', 'Problem Solver', 'Building Scalable Solutions'],
@@ -810,7 +812,6 @@ Answer:`;
             });
         }
 
-        // Scroll animations
         const scrollElements = document.querySelectorAll('.scroll-animate');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -824,10 +825,8 @@ Answer:`;
             observer.observe(el);
         });
 
-        // Set current year in footer
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        // Smooth scroll
         document.querySelectorAll('nav a[href^="#"], #mobile-menu a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 if (this.getAttribute('href').startsWith('#')) {
@@ -847,12 +846,6 @@ Answer:`;
                 }
             });
         });
-
-        // Extract portfolio context on page load (or when chat is first opened)
-        // Moved the initial call to when the chat icon is clicked and window opens for the first time.
-        // portfolioContext = extractPortfolioContext(); 
-        // console.log("Portfolio Context Extracted:", portfolioContext.substring(0, 500) + "..."); // Log first 500 chars for verification
-
     </script>
 </body>
 </html>
