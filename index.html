@@ -164,6 +164,12 @@
             color: #787878; 
             margin-bottom: 0.75rem;
         }
+        .tech-stack {
+            font-size: 0.8rem;
+            color: #4A5568;
+            margin-top: 1rem;
+            font-style: italic;
+        }
         ul {
             list-style: disc;
             padding-left: 1.25rem; 
@@ -198,163 +204,6 @@
             background-color: #F0F0F0;
             color: #191919;
         }
-
-        /* Chatbot Styles */
-        #chat-icon {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background-color: #2E6FD0; /* Notion blue */
-            color: white;
-            width: 3.5rem; /* 56px */
-            height: 3.5rem; /* 56px */
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 1000;
-            transition: transform 0.2s ease-out;
-        }
-        #chat-icon:hover {
-            transform: scale(1.1);
-        }
-        #chat-window {
-            position: fixed;
-            bottom: 6.5rem; /* Above chat icon */
-            right: 2rem;
-            width: 90%;
-            max-width: 370px;
-            height: 70vh;
-            max-height: 500px;
-            background-color: #FFFFFF;
-            border-radius: 8px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-        }
-        #chat-window.open {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        #chat-header {
-            background-color: #F7F7F7;
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #E8E8E8;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        #chat-header h3 {
-            font-weight: 600;
-            color: #191919;
-            font-size: 0.9375rem; /* 15px */
-        }
-        #close-chat-btn {
-            background: none;
-            border: none;
-            font-size: 1.25rem;
-            color: #787878;
-            cursor: pointer;
-            padding: 0.25rem;
-        }
-        #chat-messages {
-            flex-grow: 1;
-            padding: 1rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        .chat-message {
-            padding: 0.6rem 0.9rem;
-            border-radius: 6px;
-            max-width: 85%;
-            word-wrap: break-word;
-            font-size: 0.875rem; /* 14px */
-            line-height: 1.5;
-        }
-        .user-message {
-            background-color: #2E6FD0;
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 0;
-        }
-        .bot-message {
-            background-color: #F0F0F0;
-            color: #191919;
-            align-self: flex-start;
-            border-bottom-left-radius: 0;
-        }
-         .bot-message strong { 
-            font-weight: 600;
-            color: #191919;
-        }
-        .bot-message ul {
-            margin-top: 0.5rem;
-            margin-bottom: 0.25rem;
-            padding-left: 1rem; 
-        }
-        .bot-message li {
-            margin-bottom: 0.25rem;
-        }
-
-        #chat-input-area {
-            display: flex;
-            padding: 0.75rem;
-            border-top: 1px solid #E8E8E8;
-            background-color: #FFFFFF;
-        }
-        #chat-input {
-            flex-grow: 1;
-            border: 1px solid #D1D1D1;
-            border-radius: 3px;
-            padding: 0.5rem 0.75rem;
-            font-size: 0.875rem;
-            margin-right: 0.5rem;
-            outline: none;
-        }
-        #chat-input:focus {
-            border-color: #2E6FD0;
-            box-shadow: 0 0 0 2px rgba(46, 111, 208, 0.2);
-        }
-        #send-chat-btn {
-            background-color: #2E6FD0;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 3px;
-            font-weight: 500;
-            cursor: pointer;
-            font-size: 0.875rem;
-        }
-        #send-chat-btn:hover {
-            background-color: #1D5ABF;
-        }
-        .loading-dots span {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background-color: #5A5A5A;
-            border-radius: 50%;
-            margin: 0 1px;
-            animation: bounce 1.4s infinite ease-in-out both;
-        }
-        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
-        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1.0); }
-        }
-
     </style>
 </head>
 <body class="antialiased">
@@ -410,7 +259,7 @@
             </h1>
             <p id="typed-tagline" class="text-lg md:text-xl text-gray-600 mb-10"></p>
             <div class="relative mt-2 space-x-3 sm:space-x-4">
-                <a href="https://linkedin.com/in/sudeepangamgari/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                <a href="https://www.linkedin.com/in/sudeepangamgari/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
                     LinkedIn
                 </a>
                 <a href="https://github.com/sudeepreddyyy" target="_blank" rel="noopener noreferrer" class="btn btn-secondary"> 
@@ -423,7 +272,7 @@
         </div>
     </section>
 
-    <main id="portfolio-content" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
         <section id="about" class="mb-16 scroll-animate">
             <h2 class="section-title">About Me</h2>
@@ -439,35 +288,38 @@
                     <h3 class="experience-title">Data Analytical Engineer</h3>
                     <p class="company-date-text">Purdue University, United States | Jan. 2024 - Present</p>
                     <ul>
-                        <li>Built cloud-native ETL pipelines using Python, AWS S3, Lambda, Postgres, Glue and DynamoDB to automate the ingestion of student records, with a strong focus on scalability, reliability, and data integrity.</li>
-                        <li>Built a Python-based analytics system with a modular design, allowing different parts of the university to securely share and access data through both GraphQL and REST APIs.</li>
-                        <li>Implemented real-time anomaly detection using AWS Lambda and SNS, significantly improving responsiveness and reducing incident detection time by over half.</li>
+                        <li>Built cloud-native ETL pipelines using Python, AWS S3, Lambda, Postgres, Glue, and DynamoDB to automate the ingestion of student records.</li>
+                        <li>Built a Python-based analytics system with a modular design, allowing different parts of the university to securely share and access data via GraphQL and REST APIs.</li>
+                        <li>Implemented real-time anomaly detection using AWS Lambda and SNS, improving responsiveness and reducing incident detection time by over half.</li>
                         <li>Collaborated closely with academic departments, IT teams, and administrative units to define requirements, validate data flows, and ensure analytics solutions aligned with institutional goals.</li>
                     </ul>
+                    <p class="tech-stack">Tech Stack: Python, AWS (S3, Lambda, Glue, SNS), PostgreSQL, DynamoDB, GraphQL, REST APIs.</p>
                 </div>
                 <div class="card scroll-animate" style="transition-delay: 0.2s;">
                     <h3 class="experience-title">Data Engineer</h3>
                     <p class="company-date-text">JLP Partnership, India | Mar. 2021 - Dec. 2022</p>
                     <ul>
-                        <li>Designed and deployed scalable ETL pipelines using AWS Kinesis, Lambda, Redshift, S3, and DynamoDB to process millions of daily sales records, enabling timely insights into store and product performance.</li>
-                        <li>Integrated Apache Kafka for reliable ingestion of user activity logs, enabling scalable batch processing across distributed data pipelines.</li>
-                        <li>Developed and containerized secure, high-performance Flask-based REST APIs to expose backend inventory data, implementing JWT authentication and rate limiting.</li>
-                        <li>Built Power BI dashboards using DAX for dynamic visualization across operations and marketing; wrote complex SQL queries to automate manual reporting workflows.</li>
-                        <li>Implemented AWS CloudWatch and SNS/SQS for real-time monitoring and asynchronous messaging across microservices.</li>
-                        <li>Applied regression-based ML models to forecast short-term product demand using historical sales data; results fed into dashboards, improving marketing campaign planning accuracy.</li>
-                        <li>Followed agile and test-driven development (TDD) principles, integrating CI/CD pipelines to maintain deployment efficiency and reliability.</li>
+                        <li>Designed and deployed ETL pipelines using AWS Kinesis, Lambda, and Redshift to process over 2 million daily sales records in Avro, Parquet, and JSON formats, enabling near real-time reporting and analysis.</li>
+                        <li>Integrated Apache Kafka to ingest and stream user activity logs, improving pipeline scalability and fault tolerance across distributed systems.</li>
+                        <li>Developed and containerized Flask-based REST APIs with JWT authentication, reducing internal inventory data retrieval time from 10 secs. to 4 secs.</li>
+                        <li>Automated reporting workflows using advanced SQL and DAX, and built Power BI dashboards that reduced manual reporting efforts.</li>
+                        <li>Set up AWS CloudWatch with SNS and SQS to enable real-time monitoring and asynchronous alerts, minimizing downtime and enhancing reliability.</li>
+                        <li>Deployed regression-based ML models to forecast product demand, improving short-term demand prediction accuracy by ~20% and informing inventory planning.</li>
+                        <li>Followed Agile and TDD practices, embedding CI/CD pipelines to ensure rapid, error-free deployment of data services.</li>
                     </ul>
+                    <p class="tech-stack">Tech Stack: Python, AWS (Kinesis, Lambda, Redshift, S3, DynamoDB, CloudWatch, SNS, SQS), Apache Kafka, Flask, REST APIs, JWT, Power BI, DAX, SQL, CI/CD, Docker, ML (regression), TDD.</p>
                 </div>
                 <div class="card scroll-animate" style="transition-delay: 0.3s;">
                     <h3 class="experience-title">Data Analyst</h3>
                     <p class="company-date-text">BIS Pvt Ltd, India | Jun. 2020 - Feb. 2021</p>
                     <ul>
-                        <li>Developed ETL pipelines with Python and SQL to process advertising data, ensuring data quality through validation checks.</li>
-                        <li>Optimized Snowflake data warehouse schemas and implemented appropriate data modeling techniques.</li>
-                        <li>Assisted in migrating on-premise databases to cloud infrastructure (AWS S3/Redshift), improving data accessibility.</li>
-                        <li>Created interactive dashboards using Tableau to visualize ad performance metrics such as spend, CTR, and user engagement, enabling faster decision-making for marketing teams.</li>
-                        <li>Collaborated with analysts to understand data requirements and implement appropriate data transformation processes.</li>
+                        <li>Developed robust ETL pipelines in Python and SQL to process 500K+ advertising records daily, implementing validation checks to maintain data accuracy.</li>
+                        <li>Handled and optimized 2TB+ of campaign data across multi-regional datasets, improving accessibility and performance.</li>
+                        <li>Migrated 5+ on-premise databases to AWS S3 and Redshift, reducing data retrieval time for analysts and stakeholders.</li>
+                        <li>Designed interactive Tableau dashboards for visualizing ad spend, CTR, and engagement metrics, helping marketing teams reduce analysis time by 60%.</li>
+                        <li>Collaborated cross-functionally to define data transformation rules, enhancing pipeline reliability and usability across reporting layers.</li>
                     </ul>
+                    <p class="tech-stack">Tech Stack: Python, SQL, Snowflake, AWS (S3, Redshift), Tableau, ETL, Data Modeling.</p>
                 </div>
             </div>
         </section>
@@ -486,7 +338,7 @@
                     <h3 class="project-title">Voice-Controlled UAV System (AirSim, ChatGPT, YOLOv8)</h3>
                     <p class="project-description text-sm text-gray-600 mb-3">Engineered an autonomous UAV system leveraging prompt-engineered LLMs for NLP and Image Processing (YOLOv8) for real-time crop detection, achieving a 50% reduction in NLP-to-actuation latency and validating system efficacy in simulated precision agriculture scenarios.</p>
                     <div class="flex flex-wrap project-tags">
-                        <span class="tag">Python</span><span class="tag">LLM</span><span class="tag">YOLOv8</span><span class="tag">AirSim</span>
+                        <span class="tag">Python</span><span class="tag">LLM API</span><span class="tag">YOLOv8</span><span class="tag">AirSim</span>
                     </div>
                 </div>
                 <div class="card scroll-animate project-card" style="transition-delay: 0.2s;"> 
@@ -497,10 +349,10 @@
                     </div>
                 </div>
                 <div class="card scroll-animate project-card" style="transition-delay: 0.25s;">
-                    <h3 class="project-title">RAG-Based QA System to Enable Natural Language Search</h3>
-                    <p class="project-description text-sm text-gray-600 mb-3">Developed a Retrieval-Augmented Generation (RAG) system using FAISS, OpenAI, and AWS, enabling natural language queries over internal documents with 88% answer accuracy.</p>
+                    <h3 class="project-title">Netflix-Style Movie Recommendation</h3>
+                    <p class="project-description text-sm text-gray-600 mb-3">Simulating real-time user sessions and applying Markov models, collaborative filtering, and deep learning (autoencoders) to predict behavior and personalize content.</p>
                     <div class="flex flex-wrap project-tags">
-                        <span class="tag">Python</span><span class="tag">OpenAI API</span><span class="tag">FAISS</span><span class="tag">LangChain</span><span class="tag">AWS</span><span class="tag">Postgres</span>
+                        <span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">scikit-learn</span><span class="tag">TensorFlow/Keras</span><span class="tag">NetworkX</span>
                     </div>
                 </div>
             </div>
@@ -511,7 +363,7 @@
             <div class="space-y-4">
                 <div class="scroll-animate skill-block" style="transition-delay: 0.1s;">
                     <h4 class="skill-title">Cloud & Big Data</h4>
-                    <p class="skill-description text-gray-700 text-sm">AWS, Snowflake, DynamoDB, Apache Kafka, Spark (PySpark)</p>
+                    <p class="skill-description text-gray-700 text-sm">AWS, Snowflake, DynamoDB, Apache Kafka, Spark (PySpark), Airflow</p>
                 </div>
                  <div class="scroll-animate skill-block" style="transition-delay: 0.15s;">
                     <h4 class="skill-title">ETL</h4>
@@ -531,7 +383,7 @@
                 </div>
                 <div class="scroll-animate skill-block" style="transition-delay: 0.35s;">
                     <h4 class="skill-title">ML/AI</h4>
-                    <p class="skill-description text-gray-700 text-sm">LLMS, NLP, YOLOv8, XGBoost, LDA, Prompt Engineering, Tensorflow</p>
+                    <p class="skill-description text-gray-700 text-sm">LLMs, NLP, YOLOv8, XGBoost, LDA, Prompt Engineering, Tensorflow</p>
                 </div>
             </div>
         </section>
@@ -562,10 +414,11 @@
                 </a>
             </div>
             <p class="text-gray-700 text-sm mb-1">sudeepangamgari@gmail.com</p>
+            <p class="text-gray-700 text-sm mb-1">Austin, Texas</p> <!-- Added location -->
             <p class="text-gray-700 text-sm mb-8">(840) 234-4965</p>
             
              <div class="flex space-x-6">
-                <a href="https://linkedin.com/in/sudeepangamgari/" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-800 transition-colors duration-300">
+                <a href="https://www.linkedin.com/in/sudeepangamgari/" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-800 transition-colors duration-300">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/></svg>
                 </a>
                 <a href="https://github.com/sudeepreddyyy" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-800 transition-colors duration-300">
@@ -575,187 +428,14 @@
         </section>
     </main> 
 
-    <!-- Chatbot HTML -->
-    <div id="chat-icon" title="Ask me about my portfolio!">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 5.523-4.477 10-10 10S1 17.523 1 12 5.477 2 11 2s10 4.477 10 10z" />
-        </svg>
-    </div>
-
-    <div id="chat-window" class=""> <!-- Initially hidden, 'open' class will be added by JS -->
-        <div id="chat-header">
-            <h3>Ask Sudeep's AI Assistant</h3>
-            <button id="close-chat-btn" title="Close chat">&times;</button>
-        </div>
-        <div id="chat-messages">
-            <!-- Chat messages will be appended here -->
-            <div class="chat-message bot-message">Hi there! Ask me anything about Sudeep's experience, projects, or skills based on this portfolio.</div>
-        </div>
-        <div id="chat-input-area">
-            <input type="text" id="chat-input" placeholder="Type your question...">
-            <button id="send-chat-btn">Send</button>
-        </div>
-    </div>
-    <!-- End Chatbot HTML -->
-
-
     <footer class="text-center py-12 text-gray-500 text-xs border-t border-gray-200">
         <p>&copy; <span id="currentYear"></span> Sudeep Angamgari. All Rights Reserved.</p>
-    
+        
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 
     <script>
-        let portfolioContext = ''; // To store extracted resume text
-
-        // --- Function to extract text content from the portfolio ---
-        function extractPortfolioContext() {
-            const contentElement = document.getElementById('portfolio-content');
-            if (contentElement) {
-                let text = `Sudeep Angamgari's Portfolio:\n`;
-                const sections = contentElement.querySelectorAll('section');
-                sections.forEach(section => {
-                    const title = section.querySelector('h2.section-title');
-                    if (title) text += `\n## ${title.textContent.trim()}\n`;
-                    
-                    section.querySelectorAll('h3, h4, p, li').forEach(el => {
-                        text += el.textContent.trim() + '\n';
-                    });
-                });
-                return text;
-            }
-            return "Sudeep Angamgari's portfolio details are not fully available to me right now, but I'll do my best to answer.";
-        }
-
-
-        // --- OpenAI API Call Function for Chatbot ---
-        async function getChatbotResponse(userQuestion) {
-            const chatMessages = document.getElementById('chat-messages');
-            
-            const userMessageDiv = document.createElement('div');
-            userMessageDiv.classList.add('chat-message', 'user-message');
-            userMessageDiv.textContent = userQuestion;
-            chatMessages.appendChild(userMessageDiv);
-
-            const loadingMessageDiv = document.createElement('div');
-            loadingMessageDiv.classList.add('chat-message', 'bot-message');
-            loadingMessageDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
-            chatMessages.appendChild(loadingMessageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            const systemMessage = `You are Sudeep Angamgari's AI Portfolio Assistant. Based *only* on the following portfolio context, answer the user's question concisely and professionally. If the information isn't in the context, say you don't have specific details on that topic from the portfolio. Do not make up information. Keep your answers brief and to the point.
-
-Context about Sudeep Angamgari:
----
-${portfolioContext}
----`;
-
-            // Using the provided OpenAI API Key
-            const apiKey = "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";
-            const apiUrl = `https://api.openai.com/v1/chat/completions`;
-
-            const payload = {
-                model: "gpt-3.5-turbo", // Or another suitable model like "gpt-4" if your key supports it
-                messages: [
-                    { "role": "system", "content": systemMessage },
-                    { "role": "user", "content": userQuestion }
-                ],
-                temperature: 0.5, // Adjust for creativity vs. factuality
-                max_tokens: 150 // Limit response length
-            };
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`
-                     },
-                    body: JSON.stringify(payload)
-                });
-                
-                chatMessages.removeChild(loadingMessageDiv); 
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('OpenAI API Error:', errorData);
-                    let errorMsg = `Sorry, I encountered an error: ${response.status}.`;
-                    if(errorData.error && errorData.error.message) {
-                        errorMsg += ` Details: ${errorData.error.message}`;
-                    }
-                    appendBotMessage(errorMsg);
-                    return;
-                }
-
-                const result = await response.json();
-                
-                if (result.choices && result.choices.length > 0 && result.choices[0].message && result.choices[0].message.content) {
-                    const text = result.choices[0].message.content.trim();
-                    appendBotMessage(text);
-                } else {
-                    console.error('OpenAI API - Unexpected response structure:', result);
-                    appendBotMessage("I received an unexpected response. Please try rephrasing your question.");
-                }
-            } catch (error) {
-                console.error('Error calling OpenAI API:', error);
-                if (loadingMessageDiv.parentNode === chatMessages) { 
-                     chatMessages.removeChild(loadingMessageDiv);
-                }
-                appendBotMessage(`An error occurred: ${error.message}. Please check the console for details.`);
-            }
-        }
-
-        function appendBotMessage(text) {
-            const chatMessages = document.getElementById('chat-messages');
-            const botMessageDiv = document.createElement('div');
-            botMessageDiv.classList.add('chat-message', 'bot-message');
-            
-            let htmlText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); 
-            htmlText = htmlText.replace(/^\* (.*$)/gm, '<li>$1</li>'); 
-             if (htmlText.includes('<li>') && !htmlText.startsWith('<ul>')) {
-                htmlText = '<ul>' + htmlText.replace(/<\/li>(?![\s\S]*<\/li>)/, '</li></ul>'); 
-            }
-            htmlText = htmlText.replace(/\n/g, '<br>'); 
-
-            botMessageDiv.innerHTML = htmlText;
-            chatMessages.appendChild(botMessageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight; 
-        }
-
-        const chatIcon = document.getElementById('chat-icon');
-        const chatWindow = document.getElementById('chat-window');
-        const closeChatBtn = document.getElementById('close-chat-btn');
-        const chatInput = document.getElementById('chat-input');
-        const sendChatBtn = document.getElementById('send-chat-btn');
-
-        chatIcon.addEventListener('click', () => {
-            chatWindow.classList.toggle('open');
-            if (chatWindow.classList.contains('open') && !portfolioContext) { 
-                portfolioContext = extractPortfolioContext();
-                 console.log("Portfolio Context Extracted (first 500 chars):", portfolioContext.substring(0, 500) + "...");
-            }
-        });
-
-        closeChatBtn.addEventListener('click', () => {
-            chatWindow.classList.remove('open');
-        });
-
-        function handleSendMessage() {
-            const question = chatInput.value.trim();
-            if (question) {
-                getChatbotResponse(question);
-                chatInput.value = '';
-            }
-        }
-
-        sendChatBtn.addEventListener('click', handleSendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                handleSendMessage();
-            }
-        });
-
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileNavLinks = document.querySelectorAll('#mobile-menu a[href^="#"]'); 
