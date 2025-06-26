@@ -16,6 +16,12 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            /* New Spotlight Effect: Combines the base color with a radial gradient that follows the mouse */
+            background-image: radial-gradient(
+                600px circle at var(--x) var(--y),
+                rgba(46, 111, 208, 0.15), /* Light blue shade from the primary button color */
+                transparent 80%
+            );
         }
 
         .section-title {
@@ -64,10 +70,12 @@
         }
 
         nav {
-            background-color: rgba(255, 255, 255, 0.85); 
+            background-color: transparent; /* Made transparent to let the spotlight effect show through */
+        }
+        .nav-wrapper {
+             background-color: rgba(255, 255, 255, 0.85); 
             backdrop-filter: blur(8px);
             border-bottom: 1px solid #E8E8E8; 
-            box-shadow: none;
         }
         .nav-link {
             color: #5A5A5A; 
@@ -208,51 +216,53 @@
 </head>
 <body class="antialiased">
 
-    <nav>
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16"> 
-                <div class="flex items-center">
-                    <a href="#hero" class="flex items-center">
-                        <img src="notion image .png" alt="Sudeep Angamgari Logo" class="h-8 w-8 object-cover rounded-md">
-                    </a>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-2"> 
-                        <a href="#about" class="nav-link">About</a>
-                        <a href="#experience" class="nav-link">Experience</a>
-                        <a href="#projects" class="nav-link">Projects</a>
-                        <a href="#skills" class="nav-link">Skills</a>
-                        <a href="#education" class="nav-link">Education</a>
-                        <a href="#contact" class="nav-link">Contact</a>
+    <nav class="fixed top-0 left-0 right-0 z-50">
+        <div class="nav-wrapper">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16"> 
+                    <div class="flex items-center">
+                        <a href="#hero" class="flex items-center">
+                            <img src="notion image .png" alt="Sudeep Angamgari Logo" class="h-8 w-8 object-cover rounded-md">
+                        </a>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-2"> 
+                            <a href="#about" class="nav-link">About</a>
+                            <a href="#experience" class="nav-link">Experience</a>
+                            <a href="#projects" class="nav-link">Projects</a>
+                            <a href="#skills" class="nav-link">Skills</a>
+                            <a href="#education" class="nav-link">Education</a>
+                            <a href="#contact" class="nav-link">Contact</a>
+                        </div>
+                    </div>
+                    <div class="-mr-2 flex md:hidden">
+                        <button type="button" id="mobile-menu-button" class="bg-gray-100 inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-black hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500" aria-controls="mobile-menu" aria-expanded="false">
+                            <span class="sr-only">Open main menu</span>
+                            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
-                <div class="-mr-2 flex md:hidden">
-                    <button type="button" id="mobile-menu-button" class="bg-gray-100 inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-black hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500" aria-controls="mobile-menu" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
-                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
             </div>
-        </div>
-        <div id="mobile-menu" 
-             class="md:hidden fixed inset-x-0 top-16 transition-all duration-300 ease-in-out opacity-0 invisible transform -translate-y-6 pointer-events-none">
-            <div class="px-2 pt-2 pb-4 space-y-1 sm:px-3 border-t border-gray-200">
-                <a href="#about" class="nav-link block px-3 py-2 text-base">About</a>
-                <a href="#experience" class="nav-link block px-3 py-2 text-base">Experience</a>
-                <a href="#projects" class="nav-link block px-3 py-2 text-base">Projects</a>
-                <a href="#skills" class="nav-link block px-3 py-2 text-base">Skills</a>
-                <a href="#education" class="nav-link block px-3 py-2 text-base">Education</a>
-                <a href="#contact" class="nav-link block px-3 py-2 text-base">Contact</a>
+            <div id="mobile-menu" 
+                class="md:hidden fixed inset-x-0 top-16 transition-all duration-300 ease-in-out opacity-0 invisible transform -translate-y-6 pointer-events-none">
+                <div class="px-2 pt-2 pb-4 space-y-1 sm:px-3 border-t border-gray-200">
+                    <a href="#about" class="nav-link block px-3 py-2 text-base">About</a>
+                    <a href="#experience" class="nav-link block px-3 py-2 text-base">Experience</a>
+                    <a href="#projects" class="nav-link block px-3 py-2 text-base">Projects</a>
+                    <a href="#skills" class="nav-link block px-3 py-2 text-base">Skills</a>
+                    <a href="#education" class="nav-link block px-3 py-2 text-base">Education</a>
+                    <a href="#contact" class="nav-link block px-3 py-2 text-base">Contact</a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <section id="hero" class="min-h-[calc(100vh-4rem)] flex items-center justify-center text-center px-4 pt-16 sm:pt-0">
+    <section id="hero" class="min-h-screen flex items-center justify-center text-center px-4 pt-16 sm:pt-0">
         <div class="content-z scroll-animate max-w-2xl mx-auto">
             <h1 class="text-4xl md:text-5xl font-semibold text-gray-900 mb-3">
                 Sudeep Angamgari
@@ -436,6 +446,13 @@
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 
     <script>
+        // --- START: Pointer Spotlight Effect ---
+        document.addEventListener('mousemove', e => {
+            document.documentElement.style.setProperty('--x', e.clientX + 'px');
+            document.documentElement.style.setProperty('--y', e.clientY + 'px');
+        });
+        // --- END: Pointer Spotlight Effect ---
+
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileNavLinks = document.querySelectorAll('#mobile-menu a[href^="#"]'); 
