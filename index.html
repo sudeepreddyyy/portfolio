@@ -4,57 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sudeep Angamgari - Portfolio</title>
-    <!-- Favicon Link Added -->
     <link rel="icon" type="image/png" href="notion image .png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #FFFFFF; 
-            color: #191919; 
+            background-color: #FFFFFF;
+            color: #191919;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            /* New Spotlight Effect: Combines the base color with a radial gradient that follows the mouse */
             background-image: radial-gradient(
-                600px circle at var(--x) var(--y),
-                rgba(46, 111, 208, 0.15), /* Light blue shade from the primary button color */
+                600px circle at var(--x, 50%) var(--y, 50%),
+                rgba(46, 111, 208, 0.15),
                 transparent 80%
             );
         }
 
         .section-title {
-            font-size: 1.75rem; 
-            font-weight: 600; 
-            margin-bottom: 2rem; 
-            text-align: left; 
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-align: left;
             color: #191919;
             letter-spacing: -0.02em;
         }
+
         .card {
-            background-color: #FFFFFF; 
-            border-radius: 3px; 
-            padding: 1.5rem; 
+            background-color: #FFFFFF;
+            border-radius: 3px;
+            padding: 1.5rem;
             transition: background-color 0.2s ease;
-            border: 1px solid #E8E8E8; 
-            margin-bottom: 1.5rem; 
+            border: 1px solid #E8E8E8;
+            margin-bottom: 1.5rem;
         }
+
         .card:hover {
-            background-color: #F7F7F7; 
+            background-color: #F7F7F7;
         }
+
         .tag {
-            background-color: #ECECEC; 
-            color: #5A5A5A; 
+            background-color: #ECECEC;
+            color: #5A5A5A;
             padding: 0.25rem 0.6rem;
-            border-radius: 3px; 
-            font-size: 0.75rem; 
+            border-radius: 3px;
+            font-size: 0.75rem;
             margin-right: 0.5rem;
             margin-bottom: 0.5rem;
             display: inline-block;
             font-weight: 500;
             transition: background-color 0.2s ease;
         }
+
         .tag:hover {
             background-color: #E0E0E0;
         }
@@ -64,84 +66,98 @@
             transform: translateY(20px);
             transition: opacity 0.5s ease-out, transform 0.5s ease-out;
         }
+
         .scroll-animate.is-visible {
             opacity: 1;
             transform: translateY(0);
         }
 
         nav {
-            background-color: transparent; /* Made transparent to let the spotlight effect show through */
+            background-color: transparent;
         }
+
         .nav-wrapper {
-             background-color: rgba(255, 255, 255, 0.85); 
+            background-color: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
-            border-bottom: 1px solid #E8E8E8; 
+            border-bottom: 1px solid #E8E8E8;
         }
+
         .nav-link {
-            color: #5A5A5A; 
+            color: #5A5A5A;
             font-weight: 500;
-            font-size: 0.875rem; 
+            font-size: 0.875rem;
             padding: 0.5rem 0.75rem;
             border-radius: 4px;
             transition: color 0.2s ease, background-color 0.2s ease;
         }
+
         .nav-link:hover {
             color: #191919;
-            background-color: #F0F0F0; 
+            background-color: #F0F0F0;
         }
-        .nav-link::after { 
+
+        .nav-link::after {
             display: none;
         }
-        
+
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
+
         ::-webkit-scrollbar-track {
-            background: transparent; 
+            background: transparent;
         }
+
         ::-webkit-scrollbar-thumb {
-            background: #D1D1D1; 
+            background: #D1D1D1;
             border-radius: 3px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background: #BBBBBB;
         }
 
         .btn {
-            display: inline-flex; 
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             font-weight: 500;
-            padding: 0.5rem 1rem; 
-            border-radius: 3px; 
+            padding: 0.5rem 1rem;
+            border-radius: 3px;
             transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
-            text-transform: none; 
+            text-transform: none;
             letter-spacing: normal;
-            font-size: 0.875rem; 
+            font-size: 0.875rem;
             border: 1px solid transparent;
             box-shadow: none;
         }
+
         .btn-primary {
-            background-color: #2E6FD0; 
+            background-color: #2E6FD0;
             color: #FFFFFF;
         }
+
         .btn-primary:hover {
-            background-color: #1D5ABF; 
+            background-color: #1D5ABF;
         }
+
         .btn-secondary {
-            background-color: #F0F0F0; 
+            background-color: #F0F0F0;
             color: #191919;
             border: 1px solid #E0E0E0;
         }
+
         .btn-secondary:hover {
             background-color: #E6E6E6;
         }
-        .btn-outline { 
+
+        .btn-outline {
             background-color: transparent;
             color: #5A5A5A;
             border: 1px solid #D1D1D1;
         }
+
         .btn-outline:hover {
             background-color: #F7F7F7;
             color: #191919;
@@ -150,91 +166,108 @@
 
         h1, h2, h3, h4, h5, h6 {
             color: #191919;
-            font-weight: 600; 
+            font-weight: 600;
             letter-spacing: -0.015em;
         }
-        #typed-tagline { 
-            font-size: 1.25rem; 
-            color: #5A5A5A; 
-            font-weight: 400; 
-            display: block; 
-            min-height: 1.5em; 
-        } 
-        
-        .experience-title, .project-title, .skill-title, .education-title {
-            font-size: 1.25rem; 
+
+        #typed-tagline {
+            font-size: 1.25rem;
+            color: #5A5A5A;
+            font-weight: 400;
+            display: block;
+            min-height: 1.5em;
+        }
+
+        .experience-title,
+        .project-title,
+        .skill-title,
+        .education-title,
+        .certification-title {
+            font-size: 1.25rem;
             font-weight: 600;
             color: #191919;
             margin-bottom: 0.25rem;
         }
+
         .company-date-text {
-            font-size: 0.875rem; 
-            color: #787878; 
+            font-size: 0.875rem;
+            color: #787878;
             margin-bottom: 0.75rem;
         }
+
         .tech-stack {
             font-size: 0.8rem;
             color: #4A5568;
             margin-top: 1rem;
             font-style: italic;
         }
+
         ul {
             list-style: disc;
-            padding-left: 1.25rem; 
-            font-size: 0.9375rem; 
+            padding-left: 1.25rem;
+            font-size: 0.9375rem;
             line-height: 1.6;
-            color: #333333; 
+            color: #333333;
         }
+
         li {
             margin-bottom: 0.5rem;
         }
-        p { 
-            font-size: 0.9375rem; 
+
+        p {
+            font-size: 0.9375rem;
             line-height: 1.6;
             color: #333333;
         }
-        .section-description { 
-             font-size: 1rem; 
-             color: #333333;
-             line-height: 1.7;
+
+        .section-description {
+            font-size: 1rem;
+            color: #333333;
+            line-height: 1.7;
         }
 
         #mobile-menu {
-            z-index: 45; 
-            background-color: rgba(255, 255, 255, 0.95); 
+            z-index: 45;
+            background-color: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(8px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
+
         #mobile-menu a {
             color: #333333;
         }
+
         #mobile-menu a:hover {
             background-color: #F0F0F0;
             color: #191919;
         }
     </style>
 </head>
+
 <body class="antialiased">
 
     <nav class="fixed top-0 left-0 right-0 z-50">
         <div class="nav-wrapper">
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16"> 
+                <div class="flex items-center justify-between h-16">
                     <div class="flex items-center">
                         <a href="#hero" class="flex items-center">
                             <img src="notion image .png" alt="Sudeep Angamgari Logo" class="h-8 w-8 object-cover rounded-md">
                         </a>
                     </div>
+
                     <div class="hidden md:block">
-                        <div class="ml-10 flex items-baseline space-x-2"> 
+                        <div class="ml-10 flex items-baseline space-x-2">
                             <a href="#about" class="nav-link">About</a>
                             <a href="#experience" class="nav-link">Experience</a>
                             <a href="#projects" class="nav-link">Projects</a>
                             <a href="#skills" class="nav-link">Skills</a>
+                            <a href="#certifications" class="nav-link">Certifications</a>
                             <a href="#education" class="nav-link">Education</a>
                             <a href="#contact" class="nav-link">Contact</a>
                         </div>
                     </div>
+
                     <div class="-mr-2 flex md:hidden">
                         <button type="button" id="mobile-menu-button" class="bg-gray-100 inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-black hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500" aria-controls="mobile-menu" aria-expanded="false">
                             <span class="sr-only">Open main menu</span>
@@ -248,13 +281,14 @@
                     </div>
                 </div>
             </div>
-            <div id="mobile-menu" 
-                class="md:hidden fixed inset-x-0 top-16 transition-all duration-300 ease-in-out opacity-0 invisible transform -translate-y-6 pointer-events-none">
+
+            <div id="mobile-menu" class="md:hidden fixed inset-x-0 top-16 transition-all duration-300 ease-in-out opacity-0 invisible transform -translate-y-6 pointer-events-none">
                 <div class="px-2 pt-2 pb-4 space-y-1 sm:px-3 border-t border-gray-200">
                     <a href="#about" class="nav-link block px-3 py-2 text-base">About</a>
                     <a href="#experience" class="nav-link block px-3 py-2 text-base">Experience</a>
                     <a href="#projects" class="nav-link block px-3 py-2 text-base">Projects</a>
                     <a href="#skills" class="nav-link block px-3 py-2 text-base">Skills</a>
+                    <a href="#certifications" class="nav-link block px-3 py-2 text-base">Certifications</a>
                     <a href="#education" class="nav-link block px-3 py-2 text-base">Education</a>
                     <a href="#contact" class="nav-link block px-3 py-2 text-base">Contact</a>
                 </div>
@@ -264,20 +298,13 @@
 
     <section id="hero" class="min-h-screen flex items-center justify-center text-center px-4 pt-16 sm:pt-0">
         <div class="content-z scroll-animate max-w-2xl mx-auto">
-            <h1 class="text-4xl md:text-5xl font-semibold text-gray-900 mb-3">
-                Sudeep Angamgari
-            </h1>
+            <h1 class="text-4xl md:text-5xl font-semibold text-gray-900 mb-3">Sudeep Angamgari</h1>
             <p id="typed-tagline" class="text-lg md:text-xl text-gray-600 mb-10"></p>
+
             <div class="relative mt-2 space-x-3 sm:space-x-4">
-                <a href="https://www.linkedin.com/in/sudeepangamgari/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-                    LinkedIn
-                </a>
-                <a href="https://github.com/sudeepreddyyy" target="_blank" rel="noopener noreferrer" class="btn btn-secondary"> 
-                    GitHub 
-                </a>
-                 <a href="#contact" class="btn btn-primary">
-                    Contact Me
-                </a>
+                <a href="https://www.linkedin.com/in/sudeepangamgari/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">LinkedIn</a>
+                <a href="https://github.com/sudeepreddyyy" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub</a>
+                <a href="#contact" class="btn btn-primary">Contact Me</a>
             </div>
         </div>
     </section>
@@ -287,82 +314,118 @@
         <section id="about" class="mb-16 scroll-animate">
             <h2 class="section-title">About Me</h2>
             <p class="section-description">
-                A dedicated and innovative Data Engineer, I hold a Master's in Computer Information Technology from Purdue University. My expertise lies in crafting robust, scalable data pipelines and harnessing real-time data with a focus on AWS cloud technologies. I thrive on transforming complex datasets into strategic assets, driving business intelligence and operational excellence through Python, SQL, Big Data frameworks, and applied Machine Learning.
+                Data Engineer with 4+ years of experience building production data pipelines across AWS and Microsoft Fabric. I specialize in PySpark, streaming architectures, modern data warehousing, and BI-ready data models. I am currently building agentic workflows that use LLMs and Microsoft Fabric REST APIs to diagnose and remediate pipeline failures, while continuing to design scalable ingestion, validation, and analytics solutions.
             </p>
         </section>
 
         <section id="experience" class="mb-16">
             <h2 class="section-title scroll-animate">Professional Experience</h2>
-            <div class="space-y-6"> 
+
+            <div class="space-y-6">
                 <div class="card scroll-animate" style="transition-delay: 0.1s;">
-                    <h3 class="experience-title">Data Analytical Engineer</h3>
-                    <p class="company-date-text">Purdue University, United States | Jan. 2024 - Present</p>
+                    <h3 class="experience-title">Data Engineer</h3>
+                    <p class="company-date-text">Microsoft, Seattle, WA | Oct. 2025 - Present</p>
                     <ul>
-                        <li>Built cloud-native ETL pipelines using Python, AWS S3, Lambda, Postgres, Glue, and DynamoDB to automate the ingestion of student records.</li>
-                        <li>Built a Python-based analytics system with a modular design, allowing different parts of the university to securely share and access data via GraphQL and REST APIs.</li>
-                        <li>Implemented real-time anomaly detection using AWS Lambda and SNS, improving responsiveness and reducing incident detection time by over half.</li>
-                        <li>Collaborated closely with academic departments, IT teams, and administrative units to define requirements, validate data flows, and ensure analytics solutions aligned with institutional goals.</li>
+                        <li>Building an agentic workflow leveraging Microsoft Fabric REST APIs and LLMs to diagnose pipeline failures, identify root causes, and apply remediations across production data workflows.</li>
+                        <li>Designed a consolidated snapshot model using Fabric shortcuts to OneLake, merging 10+ source tables and reducing Power BI query response time by 80%.</li>
+                        <li>Built Microsoft Fabric ingestion pipelines using notebooks and Data Factory across CSV, Parquet, dataflows, and Cosmos DB sources for Finance and Operations dashboards.</li>
+                        <li>Implemented an automated PySpark validation framework for revenue reporting pipelines, catching data quality issues before they reached executive financial dashboards.</li>
+                        <li>Redesigned Power BI semantic model relationships and DAX measures for sales forecasting, cutting report refresh time by over 50%.</li>
                     </ul>
-                    <p class="tech-stack">Tech Stack: Python, AWS (S3, Lambda, Glue, SNS), PostgreSQL, DynamoDB, GraphQL, REST APIs.</p>
+                    <p class="tech-stack">Tech Stack: Microsoft Fabric, OneLake, Fabric REST APIs, PySpark, Data Factory, Cosmos DB, Power BI, DAX, LLMs.</p>
                 </div>
+
                 <div class="card scroll-animate" style="transition-delay: 0.2s;">
+                    <h3 class="experience-title">Research Assistant</h3>
+                    <p class="company-date-text">Purdue University, IN | Jan. 2024 - May 2025</p>
+                    <ul>
+                        <li>Engineered AWS ETL pipelines using Lambda, S3, and PostgreSQL to process research datasets and expose them via REST APIs, streamlining faculty access to departmental analytics.</li>
+                        <li>Developed a voice-controlled drone system using LLM API integration to convert natural language commands into flight actions, reducing manual operation complexity.</li>
+                        <li>Built an image processing pipeline integrating YOLOv8 object detection with AirSim drone simulation to analyze aerial imagery for precision agriculture research.</li>
+                    </ul>
+                    <p class="tech-stack">Tech Stack: Python, AWS Lambda, S3, PostgreSQL, REST APIs, LLM APIs, YOLOv8, AirSim.</p>
+                </div>
+
+                <div class="card scroll-animate" style="transition-delay: 0.3s;">
                     <h3 class="experience-title">Data Engineer</h3>
                     <p class="company-date-text">JLP Partnership, India | Mar. 2021 - Dec. 2022</p>
                     <ul>
-                        <li>Designed and deployed ETL pipelines using AWS Kinesis, Lambda, and Redshift to process over 2 million daily sales records in Avro, Parquet, and JSON formats, enabling near real-time reporting and analysis.</li>
-                        <li>Integrated Apache Kafka to ingest and stream user activity logs, improving pipeline scalability and fault tolerance across distributed systems.</li>
-                        <li>Developed and containerized Flask-based REST APIs with JWT authentication, reducing internal inventory data retrieval time from 10 secs. to 4 secs.</li>
-                        <li>Automated reporting workflows using advanced SQL and DAX, and built Power BI dashboards that reduced manual reporting efforts.</li>
-                        <li>Set up AWS CloudWatch with SNS and SQS to enable real-time monitoring and asynchronous alerts, minimizing downtime and enhancing reliability.</li>
-                        <li>Deployed regression-based ML models to forecast product demand, improving short-term demand prediction accuracy by ~20% and informing inventory planning.</li>
-                        <li>Followed Agile and TDD practices, embedding CI/CD pipelines to ensure rapid, error-free deployment of data services.</li>
+                        <li>Architected a Kafka streaming pipeline replacing legacy 2-hour batch ETL, processing 500K+ daily e-commerce transactions through AWS Glue and Redshift and reducing data availability lag to under 5 minutes.</li>
+                        <li>Designed a real-time streaming architecture using AWS Kinesis and Lambda, cutting order-to-dashboard latency from 6+ hours to under 30 minutes.</li>
+                        <li>Built ETL workflows transforming raw transactional data into star-schema tables powering Power BI dashboards for a 30-person operations team.</li>
+                        <li>Integrated REST APIs across payment, shipping, and inventory systems with automated validation checks to improve data completeness and reduce manual correction effort.</li>
                     </ul>
-                    <p class="tech-stack">Tech Stack: Python, AWS (Kinesis, Lambda, Redshift, S3, DynamoDB, CloudWatch, SNS, SQS), Apache Kafka, Flask, REST APIs, JWT, Power BI, DAX, SQL, CI/CD, Docker, ML (regression), TDD.</p>
+                    <p class="tech-stack">Tech Stack: Python, Apache Kafka, AWS Kinesis, Lambda, Glue, Redshift, Power BI, SQL, REST APIs.</p>
                 </div>
-                <div class="card scroll-animate" style="transition-delay: 0.3s;">
+
+                <div class="card scroll-animate" style="transition-delay: 0.4s;">
                     <h3 class="experience-title">Data Analyst</h3>
                     <p class="company-date-text">BIS Pvt Ltd, India | Jun. 2020 - Feb. 2021</p>
                     <ul>
-                        <li>Developed robust ETL pipelines in Python and SQL to process 500K+ advertising records daily, implementing validation checks to maintain data accuracy.</li>
-                        <li>Handled and optimized 2TB+ of campaign data across multi-regional datasets, improving accessibility and performance.</li>
-                        <li>Migrated 5+ on-premise databases to AWS S3 and Redshift, reducing data retrieval time for analysts and stakeholders.</li>
-                        <li>Designed interactive Tableau dashboards for visualizing ad spend, CTR, and engagement metrics, helping marketing teams reduce analysis time by 60%.</li>
-                        <li>Collaborated cross-functionally to define data transformation rules, enhancing pipeline reliability and usability across reporting layers.</li>
+                        <li>Automated data preparation for 50+ monthly marketing campaigns using Python and SQL.</li>
+                        <li>Built Tableau dashboards tracking ad spend, CTR, and ROI for campaign performance visibility.</li>
+                        <li>Developed SQL-based ETL workflows to standardize campaign data from Google Ads, Facebook, and LinkedIn, reducing manual preparation time by 85%.</li>
                     </ul>
-                    <p class="tech-stack">Tech Stack: Python, SQL, Snowflake, AWS (S3, Redshift), Tableau, ETL, Data Modeling.</p>
+                    <p class="tech-stack">Tech Stack: Python, SQL, Tableau, ETL, Google Ads, Facebook Ads, LinkedIn Ads.</p>
                 </div>
             </div>
         </section>
 
         <section id="projects" class="mb-16">
             <h2 class="section-title scroll-animate">My Projects</h2>
-            <div class="grid md:grid-cols-2 gap-6"> 
+
+            <div class="grid md:grid-cols-2 gap-6">
                 <div class="card scroll-animate project-card" style="transition-delay: 0.1s;">
-                    <h3 class="project-title">Real-Time Stock Market Data Pipeline using Kafka and AWS</h3>
-                    <p class="project-description text-sm text-gray-600 mb-3">Constructed a real-time stock data pipeline processing 500K+ daily transactions, reducing data latency by 30% and query execution time by 25% through efficient ETL workflows.</p>
+                    <h3 class="project-title">Modern Data Stack Pipeline</h3>
+                    <p class="project-description text-sm text-gray-600 mb-3">
+                        Building an end-to-end pipeline that ingests public NYC taxi data through Airflow into Snowflake, with dbt models, schema tests, and incremental materializations to demonstrate modern transformation workflows.
+                    </p>
                     <div class="flex flex-wrap project-tags">
-                        <span class="tag">Apache Kafka</span><span class="tag">AWS (Glue, Redshift, S3)</span><span class="tag">Python</span>
+                        <span class="tag">Airflow</span>
+                        <span class="tag">Snowflake</span>
+                        <span class="tag">dbt</span>
+                        <span class="tag">Python</span>
+                        <span class="tag">SQL</span>
                     </div>
                 </div>
+
                 <div class="card scroll-animate project-card" style="transition-delay: 0.15s;">
-                    <h3 class="project-title">Voice-Controlled UAV System (AirSim, ChatGPT, YOLOv8)</h3>
-                    <p class="project-description text-sm text-gray-600 mb-3">Engineered an autonomous UAV system leveraging prompt-engineered LLMs for NLP and Image Processing (YOLOv8) for real-time crop detection, achieving a 50% reduction in NLP-to-actuation latency and validating system efficacy in simulated precision agriculture scenarios.</p>
+                    <h3 class="project-title">Voice-Controlled UAV System</h3>
+                    <p class="project-description text-sm text-gray-600 mb-3">
+                        Developed a drone control system using LLM API integration to translate natural language into flight actions, paired with YOLOv8 and AirSim for aerial image analysis in precision agriculture research.
+                    </p>
                     <div class="flex flex-wrap project-tags">
-                        <span class="tag">Python</span><span class="tag">LLM API</span><span class="tag">YOLOv8</span><span class="tag">AirSim</span>
+                        <span class="tag">Python</span>
+                        <span class="tag">LLM API</span>
+                        <span class="tag">YOLOv8</span>
+                        <span class="tag">AirSim</span>
                     </div>
                 </div>
-                <div class="card scroll-animate project-card" style="transition-delay: 0.2s;"> 
-                    <h3 class="project-title">NLP-Powered Book Recommendation System</h3>
-                    <p class="project-description text-sm text-gray-600 mb-3">Designed a personalized recommendation engine using an LLM-powered chatbot and Neo4j to model user preferences and relationship patterns for context-aware suggestions.</p>
+
+                <div class="card scroll-animate project-card" style="transition-delay: 0.2s;">
+                    <h3 class="project-title">Real-Time Stock Market Data Pipeline</h3>
+                    <p class="project-description text-sm text-gray-600 mb-3">
+                        Constructed a real-time stock data pipeline using Kafka and AWS to process streaming transactions and improve data latency through efficient ETL workflows.
+                    </p>
                     <div class="flex flex-wrap project-tags">
-                        <span class="tag">Streamlit</span><span class="tag">Python</span><span class="tag">Llama API</span><span class="tag">Neo4j</span>
+                        <span class="tag">Apache Kafka</span>
+                        <span class="tag">AWS Glue</span>
+                        <span class="tag">Redshift</span>
+                        <span class="tag">S3</span>
+                        <span class="tag">Python</span>
                     </div>
                 </div>
+
                 <div class="card scroll-animate project-card" style="transition-delay: 0.25s;">
-                    <h3 class="project-title">Netflix-Style Movie Recommendation</h3>
-                    <p class="project-description text-sm text-gray-600 mb-3">Simulating real-time user sessions and applying Markov models, collaborative filtering, and deep learning (autoencoders) to predict behavior and personalize content.</p>
+                    <h3 class="project-title">NLP-Powered Book Recommendation System</h3>
+                    <p class="project-description text-sm text-gray-600 mb-3">
+                        Designed a personalized recommendation engine using an LLM-powered chatbot and Neo4j to model user preferences and relationship patterns for context-aware suggestions.
+                    </p>
                     <div class="flex flex-wrap project-tags">
-                        <span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">scikit-learn</span><span class="tag">TensorFlow/Keras</span><span class="tag">NetworkX</span>
+                        <span class="tag">Streamlit</span>
+                        <span class="tag">Python</span>
+                        <span class="tag">Llama API</span>
+                        <span class="tag">Neo4j</span>
                     </div>
                 </div>
             </div>
@@ -370,128 +433,145 @@
 
         <section id="skills" class="mb-16">
             <h2 class="section-title scroll-animate">Technical Skills</h2>
+
             <div class="space-y-4">
                 <div class="scroll-animate skill-block" style="transition-delay: 0.1s;">
+                    <h4 class="skill-title">Primary Stack</h4>
+                    <p class="skill-description text-gray-700 text-sm">Python, PySpark, SQL, AWS, Microsoft Fabric, Apache Kafka, Power BI</p>
+                </div>
+
+                <div class="scroll-animate skill-block" style="transition-delay: 0.15s;">
                     <h4 class="skill-title">Cloud & Big Data</h4>
-                    <p class="skill-description text-gray-700 text-sm">AWS, Snowflake, DynamoDB, Apache Kafka, Spark (PySpark), Airflow</p>
+                    <p class="skill-description text-gray-700 text-sm">AWS S3, Lambda, Glue, Kinesis, Redshift, CloudWatch, Microsoft Fabric, Snowflake, Spark, Airflow</p>
                 </div>
-                 <div class="scroll-animate skill-block" style="transition-delay: 0.15s;">
-                    <h4 class="skill-title">ETL</h4>
-                    <p class="skill-description text-gray-700 text-sm">Python (Pandas, Flask), SQL (PostgreSQL, MySQL), NOSQL (DynamoDB, MongoDB), Neo4j, Apache Airflow, GraphQL, REST</p>
-                </div>
+
                 <div class="scroll-animate skill-block" style="transition-delay: 0.2s;">
-                    <h4 class="skill-title">Visualization</h4>
-                    <p class="skill-description text-gray-700 text-sm">Power BI, Tableau, Streamlit, HTML, CSS, JavaScript</p>
+                    <h4 class="skill-title">Data Engineering</h4>
+                    <p class="skill-description text-gray-700 text-sm">Pandas, PostgreSQL, MySQL, DynamoDB, MongoDB, Cosmos DB, Neo4j, REST APIs, ETL/ELT pipelines, data quality and validation frameworks</p>
                 </div>
+
                 <div class="scroll-animate skill-block" style="transition-delay: 0.25s;">
-                    <h4 class="skill-title">DevOps</h4>
-                    <p class="skill-description text-gray-700 text-sm">Git, GitHub, Docker, CI/CD</p>
+                    <h4 class="skill-title">Visualization & BI</h4>
+                    <p class="skill-description text-gray-700 text-sm">Power BI, DAX, Semantic Models, Tableau</p>
                 </div>
+
                 <div class="scroll-animate skill-block" style="transition-delay: 0.3s;">
-                    <h4 class="skill-title">Tools</h4>
-                    <p class="skill-description text-gray-700 text-sm">Jupyter, VSCode, JIRA</p>
+                    <h4 class="skill-title">DevOps & Tools</h4>
+                    <p class="skill-description text-gray-700 text-sm">Git, Docker, CI/CD, Shell Scripting, JIRA, Postman</p>
                 </div>
+
                 <div class="scroll-animate skill-block" style="transition-delay: 0.35s;">
                     <h4 class="skill-title">ML/AI</h4>
-                    <p class="skill-description text-gray-700 text-sm">LLMs, NLP, YOLOv8, XGBoost, LDA, Prompt Engineering, Tensorflow</p>
+                    <p class="skill-description text-gray-700 text-sm">LLMs, NLP, YOLOv8, Prompt Engineering, agentic workflows</p>
                 </div>
+            </div>
+        </section>
+
+        <section id="certifications" class="mb-16 scroll-animate">
+            <h2 class="section-title">Certifications</h2>
+
+            <div class="card">
+                <h3 class="certification-title">AWS Certified Data Engineer – Associate</h3>
+                <p class="company-date-text">Issued Jun. 2025</p>
+            </div>
+
+            <div class="card mt-4">
+                <h3 class="certification-title">Microsoft Certified: Azure Fabric Data Engineer Associate</h3>
+                <p class="company-date-text">Issued Aug. 2025</p>
             </div>
         </section>
 
         <section id="education" class="mb-16 scroll-animate">
             <h2 class="section-title">Education</h2>
-            <div class="card"> 
+
+            <div class="card">
                 <h3 class="education-title">Master of Science in Computer Information Technology</h3>
-                <p class="company-date-text">Purdue University | Jan. 2023 - Dec. 2024</p>
-            </div>
-            <div class="card mt-4"> 
-                <h3 class="education-title">Bachelors of Technology in Information Technology</h3>
-                <p class="company-date-text">JNTUH | Aug. 2016 - May 2020</p>
+                <p class="company-date-text">Purdue University</p>
             </div>
         </section>
 
-        <section id="contact" class="scroll-animate"> 
+        <section id="contact" class="scroll-animate">
             <h2 class="section-title">Get In Touch</h2>
             <p class="section-description mb-6">
-                I'm actively seeking new opportunities and collaborations. If you have a project in mind or just want to connect, feel free to reach out.
+                I'm open to data engineering, analytics engineering, and cloud data platform opportunities where scalable pipelines, reliable data quality, and impactful BI solutions matter.
             </p>
+
             <div class="mb-6">
-                 <a href="mailto:sudeepangamgari@gmail.com" class="btn btn-primary">
+                <a href="mailto:sudeepinbox98@gmail.com" class="btn btn-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                     Send an Email
                 </a>
             </div>
-            <p class="text-gray-700 text-sm mb-1">sudeepangamgari@gmail.com</p>
-            <p class="text-gray-700 text-sm mb-1">Austin, Texas</p> <!-- Added location -->
+
+            <p class="text-gray-700 text-sm mb-1">sudeepinbox98@gmail.com</p>
+            <p class="text-gray-700 text-sm mb-1">Seattle, WA</p>
             <p class="text-gray-700 text-sm mb-8">(840) 234-4965</p>
-            
-             <div class="flex space-x-6">
-                <a href="https://www.linkedin.com/in/sudeepangamgari/" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-800 transition-colors duration-300">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/></svg>
+
+            <div class="flex space-x-6">
+                <a href="https://www.linkedin.com/in/sudeepangamgari/" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-800 transition-colors duration-300" aria-label="LinkedIn profile">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/>
+                    </svg>
                 </a>
-                <a href="https://github.com/sudeepreddyyy" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-800 transition-colors duration-300">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.565 21.799 24 17.301 24 12c0-6.627-5.373-12-12-12z" clip-rule="evenodd"/></svg>
+
+                <a href="https://github.com/sudeepreddyyy" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-800 transition-colors duration-300" aria-label="GitHub profile">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.565 21.799 24 17.301 24 12c0-6.627-5.373-12-12-12z" clip-rule="evenodd"/>
+                    </svg>
                 </a>
             </div>
         </section>
-    </main> 
+    </main>
 
     <footer class="text-center py-12 text-gray-500 text-xs border-t border-gray-200">
         <p>&copy; <span id="currentYear"></span> Sudeep Angamgari. All Rights Reserved.</p>
-        
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 
     <script>
-        // --- START: Pointer Spotlight Effect ---
         document.addEventListener('mousemove', e => {
             document.documentElement.style.setProperty('--x', e.clientX + 'px');
             document.documentElement.style.setProperty('--y', e.clientY + 'px');
         });
-        // --- END: Pointer Spotlight Effect ---
 
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
-        const mobileNavLinks = document.querySelectorAll('#mobile-menu a[href^="#"]'); 
+        const mobileNavLinks = document.querySelectorAll('#mobile-menu a[href^="#"]');
 
         mobileMenuButton.addEventListener('click', () => {
             const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-            
+
             mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
-            
+
             mobileMenu.classList.toggle('opacity-0', isExpanded);
             mobileMenu.classList.toggle('invisible', isExpanded);
-            mobileMenu.classList.toggle('-translate-y-6', isExpanded); 
+            mobileMenu.classList.toggle('-translate-y-6', isExpanded);
             mobileMenu.classList.toggle('pointer-events-none', isExpanded);
 
             mobileMenu.classList.toggle('opacity-100', !isExpanded);
             mobileMenu.classList.toggle('visible', !isExpanded);
-            mobileMenu.classList.toggle('translate-y-0', !isExpanded); 
+            mobileMenu.classList.toggle('translate-y-0', !isExpanded);
             mobileMenu.classList.toggle('pointer-events-auto', !isExpanded);
 
             mobileMenuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
 
-            if (!isExpanded && window.innerWidth < 768) { 
-                document.body.classList.add('overflow-hidden');
-            } else { 
-                document.body.classList.remove('overflow-hidden');
-            }
+            document.body.classList.toggle('overflow-hidden', !isExpanded && window.innerWidth < 768);
         });
 
         mobileNavLinks.forEach(link => {
             link.addEventListener('click', () => {
                 if (mobileMenu.classList.contains('visible')) {
                     mobileMenuButton.setAttribute('aria-expanded', 'false');
-                    
+
                     mobileMenu.classList.add('opacity-0', 'invisible', '-translate-y-6', 'pointer-events-none');
                     mobileMenu.classList.remove('opacity-100', 'visible', 'translate-y-0', 'pointer-events-auto');
-                    
-                    mobileMenuButton.querySelectorAll('svg')[0].classList.remove('hidden'); 
-                    mobileMenuButton.querySelectorAll('svg')[1].classList.add('hidden');    
-                    
+
+                    mobileMenuButton.querySelectorAll('svg')[0].classList.remove('hidden');
+                    mobileMenuButton.querySelectorAll('svg')[1].classList.add('hidden');
+
                     document.body.classList.remove('overflow-hidden');
                 }
             });
@@ -499,24 +579,31 @@
 
         if (document.getElementById('typed-tagline')) {
             new Typed('#typed-tagline', {
-                strings: ['Data Engineer', 'Cloud Architect', 'AWS Specialist', 'Problem Solver', 'Building Scalable Solutions'],
-                typeSpeed: 50, 
+                strings: [
+                    'Data Engineer',
+                    'Microsoft Fabric Engineer',
+                    'AWS Certified Data Engineer',
+                    'PySpark Developer',
+                    'Building Reliable Data Platforms'
+                ],
+                typeSpeed: 50,
                 backSpeed: 25,
                 backDelay: 1500,
                 loop: true,
                 smartBackspace: true,
-                showCursor: false, 
+                showCursor: false,
             });
         }
 
         const scrollElements = document.querySelectorAll('.scroll-animate');
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
-                } 
+                }
             });
-        }, { threshold: 0.1 }); 
+        }, { threshold: 0.1 });
 
         scrollElements.forEach(el => {
             observer.observe(el);
@@ -528,12 +615,12 @@
             anchor.addEventListener('click', function (e) {
                 if (this.getAttribute('href').startsWith('#')) {
                     e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
+
+                    const targetElement = document.querySelector(this.getAttribute('href'));
+
                     if (targetElement) {
                         const navbarHeight = document.querySelector('nav').offsetHeight;
-                        const elementPosition = targetElement.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+                        const offsetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
 
                         window.scrollTo({
                             top: offsetPosition,
